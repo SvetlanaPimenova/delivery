@@ -16,7 +16,7 @@ import java.util.*;
 @WebFilter(urlPatterns = {"/*"},
         initParams = {@WebInitParam(name = "user", value = "createOrder orders pageCreate deleteOrder updateOrder_user update_page account top_up transaction"),
                         @WebInitParam(name = "manager", value = ""),
-                        @WebInitParam(name = "common", value = "calculate login logout signup home profile update")})
+                        @WebInitParam(name = "common", value = "calculate login logout signup home profile update signup_page")})
 public class SecurityFilter implements Filter {
     // commands access
     private static Map<User.Role, List<String>> accessMap = new HashMap<>();
@@ -35,7 +35,6 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        System.out.println("inside security filter");
         if (accessAllowed(request)) {
             chain.doFilter(request, response);
         } else {
@@ -51,8 +50,8 @@ public class SecurityFilter implements Filter {
 //        String commandName = request.getParameter("action");
         String requestURI = httpRequest.getRequestURI();
         String commandName = StringUtils.substringAfter(requestURI, "/delivery/");
-        if (commandName == null) {
-            return false;
+        if (commandName == null || commandName.equalsIgnoreCase("")) {
+            return true;
         }
 
         HttpSession session = httpRequest.getSession(false);

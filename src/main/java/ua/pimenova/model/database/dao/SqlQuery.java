@@ -21,7 +21,7 @@ public class SqlQuery {
         public static final String SELECT_ALL_USERS = "SELECT * FROM users WHERE `role` = 'USER'";
         public static final String SELECT_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
         public static final String SELECT_USER_BY_PHONE = "SELECT * FROM users WHERE phone = ?";
-        public static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
+        public static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE `e-mail` = ?";
         public static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE `e-mail` = ? " +
                 "AND `password` = ?";
         public static final String SELECT_USERS_BY_CITY = "SELECT * FROM users WHERE city = ?";

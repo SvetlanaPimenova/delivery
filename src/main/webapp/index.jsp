@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="c" uri="jakarta.tags.core" %>
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -53,38 +53,6 @@ body, html {
   width: 50%; /* Could be more or less, depending on screen size */
 }
 
-#message {
-  display:none;
-  background: #f1f1f1;
-  color: #000;
-  position: relative;
-  padding: 20px;
-  margin-top: 10px;
-}
-
-/* Add a green text color and a checkmark when the requirements are right */
-.valid {
-  color: green;
-}
-
-.valid:before {
-  position: relative;
-  left: -35px;
-  content: "✔";
-}
-
-/* Add a red text color and an "x" when the requirements are wrong */
-.invalid {
-  color: red;
-}
-
-.invalid:before {
-  position: relative;
-  left: -35px;
-  content: "✖";
-}
-
-
 /* Clear floats */
 .clearfix::after {
   content: "";
@@ -132,10 +100,7 @@ body, html {
                             onclick="document.getElementById('id01').style.display='block'">
                         LOGIN
                     </button>
-                    <button class="w3-button w3-bar-item"
-                            onclick="document.getElementById('id02').style.display='block'">
-                        SIGN-UP
-                    </button>
+                    <a href="signup_page" class="w3-bar-item w3-button">SIGN-UP</a>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -198,68 +163,6 @@ body, html {
         </div>
     </form>
 </div>
-
-
-<!-- Sign-up window -->
-<div id="id02" class="modal w3-container w3-padding-16 w3-grayscale w3-card w3-center">
-    <div class="modal-content animate" style="border-radius: 8px;">
-        <form action="signup" method="post" id="regForm">
-            <div class="w3-container w3-padding-16">
-                <div class="w3-row-padding">
-                    <button class="w3-button w3-large w3-right w3-opacity-max"
-                            onclick="this.form.reset(); document.getElementById('id02').style.display='none'; this.form.reset();">
-                        <i class="fa fa-close"></i></button>
-                </div>
-                <p class="w3-center w3-large">Please fill in this form to create an account.</p>
-                <hr>
-                <p class="w3-left">Name:</p>
-                <input class="w3-input w3-border" type="text" placeholder="Enter first name..." name="firstname"
-                       id="firstname" required><br>
-                <input class="w3-input w3-border" type="text" placeholder="Enter last name..." name="lastname"
-                       id="lastname" required><br>
-                <p class="w3-left">Contact Info:</p>
-                <input class="w3-input w3-border" type="text" placeholder="Enter e-mail..." name="email"
-                       id="email" required><br>
-                <input class="w3-input w3-border" type="tel" placeholder="Enter phone..." name="phone"
-                       id="phone" pattern="^\+?380\d{2}\d{3}\d{2}\d{2}$" maxlength="13"
-                       title="+380XXXXXXXXX" required><br>
-                <p class="w3-left">Address:</p>
-                <input class="w3-input w3-border" type="text" placeholder="Enter city..." name="city" id="city"
-                       required><br>
-                <input class="w3-input w3-border" type="text" placeholder="Enter street..." name="street"
-                       id="street" required><br>
-                <input class="w3-input w3-border" type="text" placeholder="Enter postal code..."
-                       name="postalcode" id="postalcode" required><br>
-                <p class="w3-left">Password:</p>
-                <input class="w3-input w3-border" type="password" placeholder="Enter password..." id="password"
-                       name="password" onkeyup="matchPassword()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                       required><br>
-                <input class="w3-input w3-border" type="password" placeholder="Repeat password..." id="reppass"
-                       name="reppass"
-                       required onkeyup="matchPassword()"><br>
-                <span id='wrong_pass'></span><br>
-                <p class="w3-left"><input type="checkbox" onclick="myFunction2(); myFunction3();"> Show Password</p>
-                <br>
-                <div id="message" class="w3-container w3-small">
-                    <p>Password must contain the following:</p>
-                    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-                    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-                    <p id="number" class="invalid">A <b>number</b></p>
-                    <p id="passwordlength" class="invalid">Minimum <b>8 characters</b></p>
-                </div>
-                <div style="float:right;">
-                    <button class="w3-button" type="submit">Submit</button>
-                    <button class="w3-button" type="button"
-                            onclick="document.getElementById('id02').style.display='none'; this.form.reset();">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 
 <!-- About Section -->
 <div class="w3-container" style="padding:128px 16px" id="about">
@@ -541,25 +444,10 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
-
-var modal2 = document.getElementById('id02');
-
-// When the user clicks anywhere outside the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal2) {
-        modal2.style.display = "none";
-    }
-}
-
-
-
-
 </script>
 
-<script src="resources/js/multiStep.js"></script>
 <script src="resources/js/showPassword.js"></script>
 <script src="resources/js/confirmPassword.js"></script>
 <script src="resources/js/phoneValidation.js"></script>
-<script src="resources/js/passwordValidation.js"></script>
 </body>
 </html>

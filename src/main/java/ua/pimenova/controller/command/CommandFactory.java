@@ -37,6 +37,7 @@ public class CommandFactory {
         commands.put("calculate", new CalculateCommand());
         commands.put("login", new LoginCommand(userService));
         commands.put("logout", new LogoutCommand());
+        commands.put("signup_page", new ShowSignUpPageCommand());
         commands.put("signup", new SignupCommand(userService));
         commands.put("home", new ShowHomePageCommand());
         commands.put("profile", new ShowProfileCommand());

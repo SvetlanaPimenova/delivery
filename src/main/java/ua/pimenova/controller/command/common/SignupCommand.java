@@ -22,13 +22,21 @@ public class SignupCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = getUser(request);
-
         try {
+            if(userService.getByPhone(user.getPhone()) != null) {
+                String errorPhone = "This phone number is already in use.";
+                request.setAttribute("errorPhone", errorPhone);
+                return Pages.SIGNUP_PAGE;
+            }
+            if(userService.getByEmail(user.getEmail()) != null) {
+                String errorEmail = "This e-mail is already in use.";
+                request.setAttribute("errorEmail", errorEmail);
+                return Pages.SIGNUP_PAGE;
+            }
             userService.create(user);
         } catch (DaoException e) {
             e.printStackTrace();
             return Pages.PAGE_ERROR;
-//            return "jsp/errorPage.jsp";
         }
         HttpSession oldSession = request.getSession(false);
         if(oldSession != null) {
@@ -38,7 +46,6 @@ public class SignupCommand implements ICommand {
         newSession.setAttribute("user", user);
         newSession.setAttribute("userRole", user.getRole());
         return Pages.USER_PROFILE;
-//        return "jsp/userProfile.jsp";
     }
 
     private User getUser(HttpServletRequest request) {
