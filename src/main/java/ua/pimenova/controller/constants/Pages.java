@@ -17,4 +17,5 @@ public final class Pages {
     //manager
     public static final String MANAGER_PROFILE = "jsp/manager/managerProfile.jsp";
     public static final String REPORTS = "jsp/manager/reports.jsp";
+    public static final String PACKAGES = "jsp/manager/packages.jsp";
 }

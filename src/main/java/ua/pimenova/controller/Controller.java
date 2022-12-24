@@ -11,7 +11,7 @@ import ua.pimenova.controller.command.ICommand;
 
 import java.io.IOException;
 
-@WebServlet("/")
+//@WebServlet("/")
 public class Controller extends HttpServlet {
 
     @Override

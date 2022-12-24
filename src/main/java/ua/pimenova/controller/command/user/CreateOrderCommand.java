@@ -48,7 +48,13 @@ public class CreateOrderCommand implements ICommand {
         double length = Double.parseDouble(request.getParameter("length"));
         double width = Double.parseDouble(request.getParameter("width"));
         double height = Double.parseDouble(request.getParameter("height"));
-        int estimatedCost = Integer.parseInt(request.getParameter("cost"));
+        String cost = request.getParameter("cost");
+        int estimatedCost;
+        if(cost == null || cost.equalsIgnoreCase("")) {
+            estimatedCost = 0;
+        } else {
+            estimatedCost = Integer.parseInt(cost);
+        }
         return new Freight(0, weight, length, width, height, estimatedCost, freightType);
     }
     private Receiver getFullReceiver(HttpServletRequest request) {

@@ -296,11 +296,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> getAllOrdersByDeliveryType(ExtraOptions.DeliveryType type) throws DaoException {
+    public List<Order> getAllOrdersByCityFrom(String city) throws DaoException {
         List<Order> orders = new ArrayList<>();
         try(Connection connection = HikariCPDataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SqlQuery.OrdersQuery.SELECT_ALL_ORDERS_BY_DELIVERY_TYPE)) {
-            statement.setInt(1, type.getId());
+            PreparedStatement statement = connection.prepareStatement(SqlQuery.OrdersQuery.SELECT_ALL_ORDERS_BY_CITY_FROM)) {
+            statement.setString(1, city);
             ResultSet resultSet = statement.executeQuery();
             orders = getListOfOrders(orders, resultSet);
         } catch(SQLException e) {

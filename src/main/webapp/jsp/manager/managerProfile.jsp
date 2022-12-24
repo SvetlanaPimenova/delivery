@@ -127,6 +127,7 @@ body, html {
         <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small" style="display: inline;">
+            <a href="packages" class="w3-button w3-bar-item" style="display: inline;">PACKAGES</a>
             <a href="reports" class="w3-button w3-bar-item" style="display: inline;">REPORTS</a>
             <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
             <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>

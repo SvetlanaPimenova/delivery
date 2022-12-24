@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersByDeliveryType(ExtraOptions.DeliveryType type) throws DaoException {
-        return orderDao.getAllOrdersByDeliveryType(type);
+    public List<Order> getAllOrdersByCityFrom(String city) throws DaoException {
+        return orderDao.getAllOrdersByCityFrom(city);
     }
 }

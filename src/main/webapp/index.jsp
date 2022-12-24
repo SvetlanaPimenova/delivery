@@ -446,8 +446,8 @@ window.onclick = function(event) {
 }
 </script>
 
-<script src="resources/js/showPassword.js"></script>
-<script src="resources/js/confirmPassword.js"></script>
-<script src="resources/js/phoneValidation.js"></script>
+<script src="./resources/js/showPassword.js"></script>
+<script src="./resources/js/confirmPassword.js"></script>
+<script src="./resources/js/phoneValidation.js"></script>
 </body>
 </html>

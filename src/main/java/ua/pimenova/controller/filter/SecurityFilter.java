@@ -13,10 +13,12 @@ import ua.pimenova.model.database.entity.User;
 import java.io.IOException;
 import java.util.*;
 
-@WebFilter(urlPatterns = {"/*"},
+/* @WebFilter(urlPatterns = {"/*"},
         initParams = {@WebInitParam(name = "user", value = "createOrder orders pageCreate deleteOrder updateOrder_user update_page account top_up transaction"),
-                        @WebInitParam(name = "manager", value = ""),
+                        @WebInitParam(name = "manager", value = "reports"),
                         @WebInitParam(name = "common", value = "calculate login logout signup home profile update signup_page")})
+                        */
+
 public class SecurityFilter implements Filter {
     // commands access
     private static Map<User.Role, List<String>> accessMap = new HashMap<>();
