@@ -54,7 +54,7 @@
     </init-param>
     <init-param>
       <param-name>manager</param-name>
-      <param-value>reports packages</param-value>
+      <param-value>reports packages updateStatus usersShipments</param-value>
     </init-param>
     <init-param>
       <param-name>common</param-name>

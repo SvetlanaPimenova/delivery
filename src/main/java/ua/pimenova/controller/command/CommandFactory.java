@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import ua.pimenova.controller.command.common.*;
 import ua.pimenova.controller.command.manager.GetPackagesCommand;
 import ua.pimenova.controller.command.manager.GetReportsCommand;
+import ua.pimenova.controller.command.manager.UpdateOrderByManagerCommand;
 import ua.pimenova.controller.command.user.*;
 import ua.pimenova.model.database.dao.impl.FreightDaoImpl;
 import ua.pimenova.model.database.dao.impl.OrderDaoImpl;
@@ -59,6 +60,7 @@ public class CommandFactory {
         //manager
         commands.put("reports", new GetReportsCommand(orderService, userService, receiverService));
         commands.put("packages", new GetPackagesCommand(orderService));
+        commands.put("updateStatus", new UpdateOrderByManagerCommand(orderService));
     }
 
     public static synchronized CommandFactory getFactory() {

@@ -26,9 +26,26 @@ body, html {
   padding: 16px;
 }
 
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
 
-
-
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  width: 50%; /* Could be more or less, depending on screen size */
+}
     </style>
 </head>
 
@@ -132,37 +149,57 @@ body, html {
             <td class="w3-border-right">Receiver</td>
             <td class="w3-border-right">Payment status</td>
             <td class="w3-border-right">Execution status</td>
+            <td><br></td>
         </tr>
-        <c:forEach var="order" items="${requestScope.orders}" varStatus="orderStatus">
+        <c:forEach var="shipment" items="${requestScope.shipments}" varStatus="shipmentStatus">
             <tr>
-                <td class="w3-border-right">${orderStatus.index + 1}</td>
-                <td class="w3-border-right">${order.orderDate}</td>
-                <td class="w3-border-right">${order.cityFrom}</td>
-                <td class="w3-border-right">${order.receiver.city}</td>
-                <td class="w3-border-right">${order.freight.type}, ${order.freight.weight} kg,<br>
-                    ${order.freight.length} x ${order.freight.width} x ${order.freight.height} cm,<br>
-                    Estimated cost: ${order.freight.estimatedCost} UAH
+                <td class="w3-border-right">${shipmentStatus.index + 1}</td>
+                <td class="w3-border-right">${shipment.orderDate}</td>
+                <td class="w3-border-right">${shipment.cityFrom}</td>
+                <td class="w3-border-right">${shipment.receiver.city}</td>
+                <td class="w3-border-right">${shipment.freight.type}, ${shipment.freight.weight} kg,<br>
+                    ${shipment.freight.length} x ${shipment.freight.width} x ${shipment.freight.height} cm,<br>
+                    Estimated cost: ${shipment.freight.estimatedCost} UAH
                 </td>
-                <td class="w3-border-right">${order.totalCost}</td>
-                <td class="w3-border-right">${order.deliveryType}</td>
-                <td class="w3-border-right">${order.sender.firstname} ${order.sender.lastname},<br>
-                    ${order.sender.email},<br>
-                    ${order.sender.phone},<br>
-                    ${order.sender.city}, ${order.sender.street},<br>
-                    ${order.sender.postalCode}
+                <td class="w3-border-right">${shipment.totalCost}</td>
+                <td class="w3-border-right">${shipment.deliveryType}</td>
+                <td class="w3-border-right">${shipment.sender.firstname} ${shipment.sender.lastname},<br>
+                    ${shipment.sender.email},<br>
+                    ${shipment.sender.phone},<br>
+                    ${shipment.sender.city}, ${shipment.sender.street},<br>
+                    ${shipment.sender.postalCode}
                 </td>
-                <td class="w3-border-right">${order.receiver.firstname} ${order.receiver.lastname},<br>
-                    ${order.receiver.phone},<br>
-                    ${order.receiver.street}, ${order.receiver.postal_code}
+                <td class="w3-border-right">${shipment.receiver.firstname} ${shipment.receiver.lastname},<br>
+                    ${shipment.receiver.phone},<br>
+                    ${shipment.receiver.street}, ${shipment.receiver.postal_code}
                 </td>
-                <td class="w3-border-right">${order.paymentStatus}</td>
-                <td class="w3-border-right">${order.executionStatus}</td>
+                <td class="w3-border-right">${shipment.paymentStatus}</td>
+                <td class="w3-border-right">${shipment.executionStatus}</td>
                 <td>
-                    <c:set var="orderId" value="${order.id}" scope="request"/>
-                    <form action="update_package_page" method="post">
-                        <input type="hidden" id="orderId" name="order_id" value="${orderId}"><br>
-                        <button class="w3-button"><i class="fa fa-edit"></i></button>
-                    </form>
+                    <c:set var="shipmentId" value="${shipment.id}" scope="request"/>
+                    <button class="w3-button" onclick="document.getElementById('id01').style.display='block'">
+                        <i class="fa fa-edit"></i></button>
+                    <div id="id01" class="modal w3-container w3-padding-16 w3-grayscale w3-card w3-center">
+                        <form class="modal-content animate" action="updateStatus" method="post"
+                              style="border-radius: 8px;">
+                            <div class="w3-container w3-padding-16">
+                                <input type="hidden" name="shipment_id" value="${shipmentId}"><br>
+                                <div class="w3-row-padding">
+                                    <select class="w3-input w3-border w3-center" id="newStatus" name="newStatus">
+                                        <option value="sent">SENT</option>
+                                        <option value="arrived_at_destination">AT DESTINATION</option>
+                                        <option value="delivered">DELIVERED</option>
+                                    </select><br>
+                                    <p>Update execution status?</p><br>
+                                    <button class="w3-button" type="submit">Yes</button>
+                                    <button class="w3-button" type="button"
+                                            onclick="document.getElementById('id01').style.display='none'">
+                                        No
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </td>
             </tr>
         </c:forEach>

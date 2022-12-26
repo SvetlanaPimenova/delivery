@@ -41,7 +41,7 @@ public class GetPackagesCommand implements ICommand {
 
         if (deliveryFilter == null && freightFilter == null && paymentFilter == null
                 && executionFilter == null) {
-            request.setAttribute("orders", orders);
+            request.setAttribute("shipments", orders);
             return Pages.PACKAGES;
         } else {
             if (deliveryFilter != null) {
@@ -57,7 +57,7 @@ public class GetPackagesCommand implements ICommand {
                 orders = filterOrdersByExecutionStatus(orders, executionFilter);
             }
         }
-        request.setAttribute("orders", orders);
+        request.setAttribute("shipments", orders);
         return Pages.PACKAGES;
     }
 
