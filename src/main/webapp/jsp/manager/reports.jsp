@@ -99,8 +99,16 @@ body, html {
             <p class="w3-center">Nothing was found.</p>
         </c:when>
         <c:otherwise>
-            <a href="pdf" class="w3-button"><i class="fa fa-file-pdf-o"></i> DOWNLOAD REPORT</a><br>
             <c:if test="${not empty requestScope.list}">
+                <c:set var="searchParameter" value="${searchParameter}" scope="request"/>
+                <c:set var="parameter" value="${parameter}" scope="request"/>
+                <form action="pdf" method="get">
+                    <input type="hidden" name="searchParameter" value="${searchParameter}"/>
+                    <input type="hidden" name="parameter" value="${parameter}"/>
+                    <button type="submit" class="w3-button"><i class="fa fa-file-pdf-o"></i> DOWNLOAD REPORT</button>
+                </form>
+                <br>
+                <!-- <a href="pdf" class="w3-button"><i class="fa fa-file-pdf-o"></i> DOWNLOAD REPORT</a><br> -->
                 <div class="w3-container w3-padding-16 w3-grayscale w3-card w3-center">
                     <table class="w3-table w3-centered w3-border w3-bordered w3-striped">
                         <tr>

@@ -177,29 +177,10 @@ body, html {
                 <td class="w3-border-right">${shipment.executionStatus}</td>
                 <td>
                     <c:set var="shipmentId" value="${shipment.id}" scope="request"/>
-                    <button class="w3-button" onclick="document.getElementById('id01').style.display='block'">
-                        <i class="fa fa-edit"></i></button>
-                    <div id="id01" class="modal w3-container w3-padding-16 w3-grayscale w3-card w3-center">
-                        <form class="modal-content animate" action="updateStatus" method="post"
-                              style="border-radius: 8px;">
-                            <div class="w3-container w3-padding-16">
-                                <input type="hidden" name="shipment_id" value="${shipmentId}"><br>
-                                <div class="w3-row-padding">
-                                    <select class="w3-input w3-border w3-center" id="newStatus" name="newStatus">
-                                        <option value="sent">SENT</option>
-                                        <option value="arrived_at_destination">AT DESTINATION</option>
-                                        <option value="delivered">DELIVERED</option>
-                                    </select><br>
-                                    <p>Update execution status?</p><br>
-                                    <button class="w3-button" type="submit">Yes</button>
-                                    <button class="w3-button" type="button"
-                                            onclick="document.getElementById('id01').style.display='none'">
-                                        No
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <form action="updateShipment_page" method="post">
+                        <input type="hidden" id="shipmentId" name="shipment_id" value="${shipmentId}"><br>
+                        <button class="w3-button"><i class="fa fa-edit"></i></button>
+                    </form>
                 </td>
             </tr>
         </c:forEach>

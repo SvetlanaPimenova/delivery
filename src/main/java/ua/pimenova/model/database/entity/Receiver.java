@@ -78,6 +78,12 @@ public class Receiver {
         this.postal_code = postal_code;
     }
 
+    @Override
+    public String toString() {
+        return firstname + " " + lastname+ ",\n" +
+                phone + ",\n" + street + ", " + postal_code;
+    }
+
     public static class ReceiverFields {
         public static final String ID = "id";
         public static final String FIRSTNAME = "firstname";

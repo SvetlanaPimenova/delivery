@@ -106,6 +106,13 @@ public class Freight {
         }
     }
 
+    @Override
+    public String toString() {
+        return type.toString() + ", " + weight + " kg,\n" + length + "x" + width + "x" +
+                height + " cm,\n" +
+                "Estimated cost: " + estimatedCost + " UAH";
+    }
+
     public static class FreightFields {
         public static final String ID = "id";
         public static final String WEIGHT = "weight";

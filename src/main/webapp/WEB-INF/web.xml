@@ -54,11 +54,11 @@
     </init-param>
     <init-param>
       <param-name>manager</param-name>
-      <param-value>reports packages updateStatus usersShipments</param-value>
+      <param-value>reports packages updateStatus updateShipment_page</param-value>
     </init-param>
     <init-param>
       <param-name>common</param-name>
-      <param-value>calculate login logout signup home profile update signup_page</param-value>
+      <param-value>calculate login logout signup home profile update signup_page pdf</param-value>
     </init-param>
   </filter>
 

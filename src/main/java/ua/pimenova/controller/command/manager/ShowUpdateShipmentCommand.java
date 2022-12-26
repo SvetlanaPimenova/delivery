@@ -11,24 +11,22 @@ import ua.pimenova.model.service.OrderService;
 
 import java.io.IOException;
 
-public class UpdateOrderByManagerCommand implements ICommand {
+public class ShowUpdateShipmentCommand implements ICommand {
     private final OrderService orderService;
 
-    public UpdateOrderByManagerCommand(OrderService orderService) {
+    public ShowUpdateShipmentCommand(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("shipment_id"));
-        Order.ExecutionStatus status = Order.ExecutionStatus.valueOf(request.getParameter("newStatus").toUpperCase());
         try {
             Order order = orderService.getByID(id);
             if(order != null) {
                 if(order.getExecutionStatus() != Order.ExecutionStatus.IN_PROCESSING) {
-                    order.setExecutionStatus(status);
-                    orderService.update(order);
-                    return Pages.USER_PROFILE;
+                    request.setAttribute("currentShipment", order);
+                    return Pages.UPDATE_PACKAGE;
                 }
             }
         } catch (DaoException e) {

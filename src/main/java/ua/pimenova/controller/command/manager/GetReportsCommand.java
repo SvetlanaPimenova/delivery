@@ -55,6 +55,7 @@ public class GetReportsCommand implements ICommand {
                 orders = searchByDate(request, orders);
                 break;
         }
+        request.setAttribute("searchParameter", searchParameter);
         request.setAttribute("user", user);
         request.setAttribute("list", orders);
         request.setAttribute("userShipments", userShipments);
@@ -87,6 +88,7 @@ public class GetReportsCommand implements ICommand {
         } catch (DaoException e) {
             e.printStackTrace();
         }
+        request.setAttribute("parameter", parameter);
         return orders;
     }
 

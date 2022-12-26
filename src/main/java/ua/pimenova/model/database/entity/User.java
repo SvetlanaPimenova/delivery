@@ -122,6 +122,14 @@ public class User {
         this.postalCode = postal_code;
     }
 
+    @Override
+    public String toString() {
+        return firstname + " " + lastname + ",\n" +
+                email + ",\n" + phone + ",\n" +
+                city + ", " + street + ",\n" +
+                postalCode;
+    }
+
     public static class UserFields {
         public static final String ID = "id";
         public static final String PASSWORD = "password";
