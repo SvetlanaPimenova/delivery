@@ -84,6 +84,8 @@ public class UserServiceImplTest {
 
     @Test
     public void updatePassword() throws DaoException {
+        Mockito.when(userDao.updatePassword(testUser)).thenReturn(true);
+        assertTrue(impl.updatePassword(testUser));
     }
 
     @Test

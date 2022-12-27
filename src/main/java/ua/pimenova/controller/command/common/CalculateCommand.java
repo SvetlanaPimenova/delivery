@@ -20,6 +20,5 @@ public class CalculateCommand implements ICommand {
                 deliveryType, weight);
         req.setAttribute("result", totalCost);
         return Pages.PAGE_INDEX;
-//        return "/index.jsp";
     }
 }
