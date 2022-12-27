@@ -4,6 +4,7 @@ import ua.pimenova.model.database.dao.UserDao;
 import ua.pimenova.model.database.entity.User;
 import ua.pimenova.model.exception.DaoException;
 import ua.pimenova.model.service.UserService;
+import ua.pimenova.model.util.EncryptingUserPassword;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) throws DaoException {
+        String encryptedPassword = EncryptingUserPassword.encryptPassword(user.getPassword());
+        user.setPassword(encryptedPassword);
         return userDao.create(user);
     }
 
@@ -41,6 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updatePassword(User user) throws DaoException {
+        String encryptedPassword = EncryptingUserPassword.encryptPassword(user.getPassword());
+        user.setPassword(encryptedPassword);
         return userDao.updatePassword(user);
     }
 
@@ -56,16 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmailAndPassword(String email, String password) throws DaoException {
-        return userDao.getUserByEmailAndPassword(email, password);
-    }
-
-    @Override
-    public List<User> getAllUsersByCity(String city) throws DaoException {
-        return userDao.getAllUsersByCity(city);
-    }
-
-    @Override
-    public List<User> getAllUsersByPostalCode(String postalCode) throws DaoException {
-        return userDao.getAllUsersByPostalCode(postalCode);
+        String encryptedPassword = EncryptingUserPassword.encryptPassword(password);
+        return userDao.getUserByEmailAndPassword(email, encryptedPassword);
     }
 }

@@ -13,5 +13,4 @@ public interface ReceiverService {
     boolean delete(Receiver receiver) throws DaoException;
     Receiver getByPhone(String phone) throws DaoException;
     List<Receiver> getAllReceiversByCity(String city) throws DaoException;
-    List<Receiver> getAllReceiversByPostalCode(String postalCode) throws DaoException;
 }

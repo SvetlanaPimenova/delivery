@@ -10,6 +10,4 @@ public interface UserDao extends Dao<User> {
     User getByEmail(String email) throws DaoException;
     boolean updatePassword(User user) throws DaoException;
     User getUserByEmailAndPassword(String email, String password) throws DaoException;
-    List<User> getAllUsersByCity(String city) throws DaoException;
-    List<User> getAllUsersByPostalCode(String postalCode) throws DaoException;
 }

@@ -25,6 +25,8 @@ public class GetPackagesCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+        int recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage"));
         List<Order> orders;
         try {
             orders = orderService.getAll();

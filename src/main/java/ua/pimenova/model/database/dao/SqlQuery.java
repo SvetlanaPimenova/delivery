@@ -24,8 +24,6 @@ public class SqlQuery {
         public static final String SELECT_USER_BY_EMAIL = "SELECT * FROM users WHERE `e-mail` = ?";
         public static final String SELECT_USER_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE `e-mail` = ? " +
                 "AND `password` = ?";
-        public static final String SELECT_USERS_BY_CITY = "SELECT * FROM users WHERE city = ?";
-        public static final String SELECT_USERS_BY_POSTAL_CODE = "SELECT * FROM users WHERE postal_code = ?";
         public static final String UPDATE_USER = "UPDATE users SET firstname = ?, lastname = ?, phone = ?, `e-mail` = ?, account = ?, role = ?, "
                 + "city = ?, street = ?, postal_code = ? WHERE id = ?";
         public static final String UPDATE_USER_PASSWORD = "UPDATE users SET password = ? WHERE id = ?";
@@ -39,7 +37,6 @@ public class SqlQuery {
         public static final String SELECT_RECEIVER_BY_ID = "SELECT * FROM receivers WHERE receivers.id = ?";
         public static final String SELECT_RECEIVER_BY_PHONE = "SELECT * FROM receivers WHERE phone = ?";
         public static final String SELECT_RECEIVERS_BY_CITY = "SELECT * FROM receivers WHERE city = ?";
-        public static final String SELECT_RECEIVERS_BY_POSTAL_CODE = "SELECT * FROM receivers WHERE postal_code = ?";
         public static final String UPDATE_RECEIVER = "UPDATE receivers SET firstname = ?, lastname = ?, phone = ?, city = ?, "
                 + "street = ?, postal_code = ? WHERE id = ?";
         public static final String DELETE_RECEIVER = "DELETE FROM receivers WHERE id = ?";
@@ -58,7 +55,7 @@ public class SqlQuery {
                 + "o.total_cost, o.delivery_type_id, r.id AS \"r.id\", r.firstname AS \"r.firstname\", r.lastname AS \"r.lastname\", r.phone AS \"r.phone\", r.city AS \"r.city\", r.street AS \"r.street\", r.postal_code AS \"r.postal_code\", u.id AS \"u.id\", u.password, u.firstname AS \"u.firstname\", "
                 + "u.lastname AS \"u.lastname\", u.phone AS \"u.phone\", u.`e-mail`, u.account, u.role, u.city AS \"u.city\", u.street AS \"u.street\", u.postal_code AS \"u.postal_code\", o.payment_status, o.execution_status FROM orders AS o JOIN freights AS f ON o.freights_id = f.id "
                 + "JOIN freight_type AS ft ON f.freight_type_id = ft.id JOIN receivers AS r ON o.receiver_info = r.id " +
-                "JOIN users AS u ON o.sender_info = u.id";
+                "JOIN users AS u ON o.sender_info = u.id LIMIT ?, ?";
         public static final String SELECT_ORDER_BY_ID = "SELECT o.id, o.date, o.city_from, f.id AS \"f.id\", f.weight, f.length, f.width, f.height, f.estimated_cost, ft.`name`, "
                 + "o.total_cost, o.delivery_type_id, r.id AS \"r.id\", r.firstname AS \"r.firstname\", r.lastname AS \"r.lastname\", r.phone AS \"r.phone\", r.city AS \"r.city\", r.street AS \"r.street\", r.postal_code AS \"r.postal_code\", u.id AS \"u.id\", u.password, u.firstname AS \"u.firstname\", "
                 + "u.lastname AS \"u.lastname\", u.phone AS \"u.phone\", u.`e-mail`, u.account, u.role, u.city AS \"u.city\", u.street AS \"u.street\", u.postal_code AS \"u.postal_code\", o.payment_status, o.execution_status FROM orders AS o JOIN freights AS f ON o.freights_id = f.id "

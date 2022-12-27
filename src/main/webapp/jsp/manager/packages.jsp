@@ -25,26 +25,26 @@ body, html {
 .container {
   padding: 16px;
 }
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  padding-top: 60px;
+.pagination {
+  display: inline-block;
 }
 
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  width: 50%; /* Could be more or less, depending on screen size */
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
 }
     </style>
 </head>
@@ -134,6 +134,14 @@ body, html {
                     </div>
                 </div>
             </div>
+            <div class="w3-row-padding">
+                <input type="hidden" name="currentPage" value="1">
+                <label for="records">Select records per page:</label>
+                <select class="form-control" id="records" name="recordsPerPage" onchange="this.form.submit()">
+                    <option value="4" selected>4</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
         </form>
     </div>
     <table class="w3-table w3-centered w3-border w3-bordered w3-striped">
@@ -186,6 +194,35 @@ body, html {
         </c:forEach>
     </table>
 </div>
+
+<nav aria-label="Navigation">
+    <ul class="pagination">
+        <c:if test="${currentPage != 1}">
+            <li class="page-item">
+                <a class="page-link" href="packages?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}"> Previous</a>
+            </li>
+        </c:if>
+        <c:forEach begin="1" end="${noOfPages}" var="i">
+            <c:choose>
+                <c:when test="${currentPage eq i}">
+                    <li class="page-item active"><a class="page-link">
+                        ${i} <span class="sr-only">(current)</span></a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <li class="page-item">
+                        <a class="page-link" href="packages?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+        <c:if test="${currentPage lt noOfPages}">
+            <li class="page-item">
+                <a class="page-link" href="packages?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
+            </li>
+        </c:if>
+    </ul>
+</nav>
 
 
 </body>

@@ -9,6 +9,4 @@ public interface ReceiverDao extends Dao<Receiver> {
 
     Receiver getByPhone(String phone) throws DaoException;
     List<Receiver> getAllReceiversByCity(String city) throws DaoException;
-    List<Receiver> getAllReceiversByPostalCode(String postalCode) throws DaoException;
-
 }

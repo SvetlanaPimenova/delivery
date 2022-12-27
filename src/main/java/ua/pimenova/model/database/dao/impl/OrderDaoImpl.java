@@ -124,6 +124,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> getAll() throws DaoException {
         List<Order> orders = new ArrayList<>();
+
         try(Connection connection = HikariCPDataSource.getConnection();
             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(SqlQuery.OrdersQuery.SELECT_ALL_ORDERS);

@@ -17,6 +17,4 @@ public interface UserService {
 
     User getByEmail(String email) throws DaoException;
     User getUserByEmailAndPassword(String email, String password) throws DaoException;
-    List<User> getAllUsersByCity(String city) throws DaoException;
-    List<User> getAllUsersByPostalCode(String postalCode) throws DaoException;
 }

@@ -162,19 +162,4 @@ public class ReceiverDaoImpl implements ReceiverDao {
         }
         return receivers;
     }
-
-    @Override
-    public List<Receiver> getAllReceiversByPostalCode(String postalCode) throws DaoException {
-        List<Receiver> receivers = new ArrayList<>();
-        try(Connection connection = HikariCPDataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SqlQuery.ReceiverQuery.SELECT_RECEIVERS_BY_POSTAL_CODE)) {
-            statement.setString(1, postalCode);
-            ResultSet resultSet = statement.executeQuery();
-            receivers = getListOfReceivers(receivers, resultSet);
-        } catch (SQLException e) {
-//            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
-        return receivers;
-    }
 }

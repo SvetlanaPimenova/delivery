@@ -48,9 +48,4 @@ public class ReceiverServiceImpl implements ReceiverService {
     public List<Receiver> getAllReceiversByCity(String city) throws DaoException {
         return receiverDao.getAllReceiversByCity(city);
     }
-
-    @Override
-    public List<Receiver> getAllReceiversByPostalCode(String postalCode) throws DaoException {
-        return receiverDao.getAllReceiversByPostalCode(postalCode);
-    }
 }

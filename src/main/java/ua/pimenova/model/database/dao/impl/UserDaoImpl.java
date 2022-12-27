@@ -94,7 +94,7 @@ public class UserDaoImpl implements UserDao {
     public User create(User user) throws DaoException {
         try(Connection connection = HikariCPDataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(SqlQuery.UsersQuery.ADD_USER, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, EncryptingUserPassword.encryptPassword(user.getPassword()));
+            statement.setString(1, user.getPassword());
             statement.setString(2, user.getFirstname());
             statement.setString(3, user.getLastname());
             statement.setString(4, user.getPhone());
@@ -141,7 +141,7 @@ public class UserDaoImpl implements UserDao {
     public boolean updatePassword(User user) throws DaoException {
         try(Connection connection = HikariCPDataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(SqlQuery.UsersQuery.UPDATE_USER_PASSWORD)) {
-            statement.setString(1, EncryptingUserPassword.encryptPassword(user.getPassword()));
+            statement.setString(1, user.getPassword());
             statement.setInt(2, user.getId());
             return  statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -196,7 +196,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByEmailAndPassword(String email, String password) throws DaoException {
-        password = EncryptingUserPassword.encryptPassword(password);
         try(Connection connection = HikariCPDataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(SqlQuery.UsersQuery.SELECT_USER_BY_EMAIL_AND_PASSWORD)) {
             statement.setString(1, email);
@@ -210,35 +209,5 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException(e);
         }
         return null;
-    }
-
-    @Override
-    public List<User> getAllUsersByCity(String city) throws DaoException {
-        List<User> users = new ArrayList<>();
-        try(Connection connection = HikariCPDataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SqlQuery.UsersQuery.SELECT_USERS_BY_CITY)) {
-            statement.setString(1, city);
-            ResultSet resultSet = statement.executeQuery();
-            users = getListOfUsers(users, resultSet);
-        } catch (SQLException e) {
-//            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
-        return users;
-    }
-
-    @Override
-    public List<User> getAllUsersByPostalCode(String postalCode) throws DaoException {
-        List<User> users = new ArrayList<>();
-        try(Connection connection = HikariCPDataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SqlQuery.UsersQuery.SELECT_USERS_BY_POSTAL_CODE)) {
-            statement.setString(1, postalCode);
-            ResultSet resultSet = statement.executeQuery();
-            users = getListOfUsers(users, resultSet);
-        } catch (SQLException e) {
-//            logger.error(e.getMessage());
-            throw new DaoException(e);
-        }
-        return users;
     }
 }
