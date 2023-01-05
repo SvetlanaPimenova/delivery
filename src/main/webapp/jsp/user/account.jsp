@@ -1,5 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
+
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -26,39 +30,66 @@ body, html {
   padding: 16px;
 }
 
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  margin: 0;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content form {
+  float: bottom;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 </style>
 </head>
 
 <body>
 
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
-        <div class="w3-right w3-hide-small" style="display: inline;">
-            <a href="orders" class="w3-button w3-bar-item" style="display: inline;">MY PACKAGES</a>
-            <a href="pageCreate" class="w3-button w3-bar-item" style="display: inline;">CREATE SHIPMENT</a>
-            <a href="account" class="w3-button w3-bar-item" style="display: inline;">ACCOUNT ${sessionScope.user.account} UAH</a>
-            <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
-            <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>
-        </div>
-    </div>
-</div>
+<jsp:include page="/templates/userMenu.jsp"/>
+
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
-        <h3><i class="fa fa-money"></i> ACCOUNT</h3>
+        <h3><i class="fa fa-money"></i> <fmt:message key="account"/></h3>
     </div>
 </header>
 
 <div class="w3-container" style="padding:16px 16px">
     <div class="w3-center">
-        <h5>Current account:  ${sessionScope.user.account}  UAH</h5><br>
+        <h5><fmt:message key="account.current"/>  ${sessionScope.user.account}  <fmt:message key="uah"/></h5><br>
         <form action="top_up" method="post">
-            <label for="account">Top up your account:</label>
+            <label for="account"><fmt:message key="account.topup"/></label>
             <input type="number" id="account" name="account" placeholder="0"><br>
-            <button class="w3-button" type="submit">Top up</button>
+            <button class="w3-button" type="submit"><fmt:message key="button.topup"/></button>
         </form>
     </div>
 </div>

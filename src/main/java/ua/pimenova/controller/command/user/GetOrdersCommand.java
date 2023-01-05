@@ -6,17 +6,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ua.pimenova.controller.command.ICommand;
 import ua.pimenova.controller.constants.Pages;
-import ua.pimenova.model.database.entity.ExtraOptions;
-import ua.pimenova.model.database.entity.Freight;
+import ua.pimenova.model.database.builder.QueryBuilder;
 import ua.pimenova.model.database.entity.Order;
 import ua.pimenova.model.database.entity.User;
 import ua.pimenova.model.exception.DaoException;
 import ua.pimenova.model.service.OrderService;
-
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GetOrdersCommand implements ICommand {
     private final OrderService orderService;
@@ -32,156 +28,44 @@ public class GetOrdersCommand implements ICommand {
         if (user == null) {
             return Pages.PAGE_ERROR;
         }
+        QueryBuilder queryBuilder = getQueryBuilder(request, user.getId());
+        int noOfRecords;
         List<Order> orders;
         try {
-            orders = orderService.getAllOrdersBySender(user);
+            orders = orderService.getAll(queryBuilder.getQuery());
+            noOfRecords = orderService.getNumberOfRows(queryBuilder.getRecordQuery());
         } catch (DaoException e) {
             e.printStackTrace();
             return Pages.PAGE_ERROR;
         }
-        String sort = request.getParameter("sort");
-        sortOrdersList(orders, sort);
-        String deliveryFilter = request.getParameter("deliveryFilter");
-        String freightFilter = request.getParameter("freightFilter");
-        String paymentFilter = request.getParameter("paymentFilter");
-        String executionFilter = request.getParameter("executionFilter");
-
-        if (deliveryFilter == null && freightFilter == null && paymentFilter == null
-                && executionFilter == null) {
-            request.setAttribute("orders", orders);
-            return Pages.ORDERS_LIST_PAGE;
-        } else {
-            if (deliveryFilter != null) {
-                orders = filterOrdersByDeliveryType(orders, deliveryFilter);
-            }
-            if(freightFilter != null) {
-                orders = filterOrdersByFreightType(orders, freightFilter);
-            }
-            if(paymentFilter != null) {
-                orders = filterOrdersByPaymentStatus(orders, paymentFilter);
-            }
-            if(executionFilter != null) {
-                orders = filterOrdersByExecutionStatus(orders, executionFilter);
-            }
-        }
+        doPagination(noOfRecords, request);
         request.setAttribute("orders", orders);
         return Pages.ORDERS_LIST_PAGE;
     }
 
-    private void sortOrdersList(List<Order> orders, String sort) {
-        if (sort != null) {
-            switch (sort) {
-                case "cost_asc":
-                    orders.sort(Comparator.comparingInt(Order::getTotalCost));
-                    break;
-                case "cost_desc":
-                    orders.sort(Comparator.comparingInt(Order::getTotalCost).reversed());
-                    break;
-                case "date_asc":
-                    orders.sort(Comparator.comparing(Order::getOrderDate));
-                    break;
-                case "date_desc":
-                    orders.sort(Comparator.comparing(Order::getOrderDate).reversed());
-                    break;
-                case "default":
-                    break;
-            }
+    private void doPagination(int noOfRecords, HttpServletRequest request) {
+        String page = request.getParameter("currentPage");
+        String records = request.getParameter("recordsPerPage");
+        if(page == null || records == null) {
+            page = "1";
+            records = "4";
         }
+        int currentPage = Integer.parseInt(page);
+        int recordsPerPage = Integer.parseInt(records);
+        int noOfPages = (int)Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("recordsPerPage", recordsPerPage);
     }
 
-    private List<Order> filterOrdersByExecutionStatus(List<Order> orders, String executionFilter) {
-        List<Order> filtered = orders;
-        switch (executionFilter) {
-            case "in_processing":
-                filtered = orders.stream()
-                        .filter(order -> order.getExecutionStatus() == Order.ExecutionStatus.IN_PROCESSING)
-                        .collect(Collectors.toList());
-                break;
-            case "formed":
-                filtered = orders.stream()
-                        .filter(order -> order.getExecutionStatus() == Order.ExecutionStatus.FORMED)
-                        .collect(Collectors.toList());
-                break;
-            case "sent":
-                filtered = orders.stream()
-                        .filter(order -> order.getExecutionStatus() == Order.ExecutionStatus.SENT)
-                        .collect(Collectors.toList());
-                break;
-            case "arrived_at_destination":
-                filtered = orders.stream()
-                        .filter(order -> order.getExecutionStatus() == Order.ExecutionStatus.ARRIVED_AT_DESTINATION)
-                        .collect(Collectors.toList());
-                break;
-            case "delivered":
-                filtered = orders.stream()
-                        .filter(order -> order.getExecutionStatus() == Order.ExecutionStatus.DELIVERED)
-                        .collect(Collectors.toList());
-                break;
-            case "default":
-                break;
-        }
-        return filtered;
-    }
-
-    private List<Order> filterOrdersByPaymentStatus(List<Order> orders, String paymentFilter) {
-        List<Order> filtered = orders;
-        switch (paymentFilter) {
-            case "paid":
-                filtered = orders.stream()
-                        .filter(order -> order.getPaymentStatus() == Order.PaymentStatus.PAID)
-                        .collect(Collectors.toList());
-                break;
-            case "unpaid":
-                filtered = orders.stream()
-                        .filter(order -> order.getPaymentStatus() == Order.PaymentStatus.UNPAID)
-                        .collect(Collectors.toList());
-                break;
-            case "default":
-                break;
-        }
-        return filtered;
-    }
-
-    private List<Order> filterOrdersByFreightType(List<Order> orders, String freightFilter) {
-        List<Order> filtered = orders;
-        switch (freightFilter) {
-            case "goods":
-                filtered = orders.stream()
-                        .filter(order -> order.getFreight().getType() == Freight.FreightType.GOODS)
-                        .collect(Collectors.toList());
-                break;
-            case "glass":
-                filtered = orders.stream()
-                        .filter(order -> order.getFreight().getType() == Freight.FreightType.GLASS)
-                        .collect(Collectors.toList());
-                break;
-            case "compact":
-                filtered = orders.stream()
-                        .filter(order -> order.getFreight().getType() == Freight.FreightType.COMPACT)
-                        .collect(Collectors.toList());
-                break;
-            case "default":
-                break;
-        }
-        return filtered;
-    }
-
-    private List<Order> filterOrdersByDeliveryType(List<Order> orders, String deliveryFilter) {
-        List<Order> filtered = orders;
-        switch (deliveryFilter) {
-            case "to_the_branch":
-                filtered = orders.stream()
-                        .filter(order -> order.getDeliveryType() == ExtraOptions.DeliveryType.TO_THE_BRANCH)
-                        .collect(Collectors.toList());
-                break;
-            case "courier":
-                filtered = orders.stream()
-                        .filter(order -> order.getDeliveryType() == ExtraOptions.DeliveryType.COURIER)
-                        .collect(Collectors.toList());
-                break;
-            case "default":
-                break;
-        }
-        return filtered;
+    private QueryBuilder getQueryBuilder(HttpServletRequest request, int id) {
+        return new QueryBuilder()
+                .setUserIdFilter(id)
+                .setSortParameter(request.getParameter("sort"))
+                .setDeliveryFilter(request.getParameter("deliveryFilter"))
+                .setFreightTypeFilter(request.getParameter("freightFilter"))
+                .setPaymentFilter(request.getParameter("paymentFilter"))
+                .setExecutionFilter(request.getParameter("executionFilter"))
+                .setLimits(request.getParameter("currentPage"), request.getParameter("recordsPerPage"));
     }
 }

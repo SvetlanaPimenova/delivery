@@ -37,7 +37,7 @@ body, html {
 }
 
 .pagination a.active {
-  background-color: #4CAF50;
+  background-color: #a1a1a1;
   color: white;
   border-radius: 5px;
 }
@@ -52,18 +52,7 @@ body, html {
 <body>
 
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
-        <div class="w3-right w3-hide-small" style="display: inline;">
-            <a href="packages" class="w3-button w3-bar-item" style="display: inline;">PACKAGES</a>
-            <a href="reports" class="w3-button w3-bar-item" style="display: inline;">REPORTS</a>
-            <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
-            <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>
-        </div>
-    </div>
-</div>
+<jsp:include page="/templates/managerMenu.jsp"/>
 
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
@@ -76,55 +65,50 @@ body, html {
 
 <div class="w3-container" style="padding:16px 16px">
     <div class="w3-row-padding">
-        <form action="packages" method="post">
+        <form action="packages" method="get">
             <div class="w3-row-padding">
                 <div class="w3-half w3-margin-bottom w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="sort" name="sort" onchange="this.form.submit()">
-                            <option value="" disabled selected>Sort</option>
+                            <option value="" selected>Sort</option>
                             <option value="cost_asc">Total cost low to high</option>
                             <option value="cost_desc">Total cost high to low</option>
                             <option value="date_asc">Old ones first</option>
                             <option value="date_desc">New ones first</option>
-                            <option value="default">By default</option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="deliveryFilter" name="deliveryFilter">
-                            <option value="" disabled selected>Delivery type</option>
+                            <option value="" selected>Delivery type</option>
                             <option value="to_the_branch">TO THE BRANCH</option>
                             <option value="courier">BY COURIER</option>
-                            <option value="default">ALL</option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="freightFilter" name="freightFilter">
-                            <option value="" disabled selected>Freight type</option>
+                            <option value="" selected>Freight type</option>
                             <option value="goods">GOODS</option>
                             <option value="glass">GLASS</option>
                             <option value="compact">COMPACT</option>
-                            <option value="default">ALL</option>
                         </select>
                     </div>
                 </div>
                 <div class="w3-half w3-margin-bottom w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="paymentFilter" name="paymentFilter">
-                            <option value="" disabled selected>Payment status</option>
+                            <option value="" selected>Payment status</option>
                             <option value="paid">PAID</option>
                             <option value="unpaid">UNPAID</option>
-                            <option value="default">ALL</option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="executionFilter" name="executionFilter">
-                            <option value="" disabled selected>Execution status</option>
+                            <option value="" selected>Execution status</option>
                             <option value="in_processing">IN PROCESSING</option>
                             <option value="formed">FORMED</option>
                             <option value="sent">SENT</option>
                             <option value="arrived_at_destination">AT DESTINATION</option>
                             <option value="delivered">DELIVERED</option>
-                            <option value="default">ALL</option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
@@ -136,11 +120,12 @@ body, html {
             </div>
             <div class="w3-row-padding">
                 <input type="hidden" name="currentPage" value="1">
-                <label for="records">Select records per page:</label>
-                <select class="form-control" id="records" name="recordsPerPage" onchange="this.form.submit()">
+                <label for="recordsPerPage">Select records per page:</label>
+                <select id="recordsPerPage" name="recordsPerPage">
                     <option value="4" selected>4</option>
                     <option value="8">8</option>
                 </select>
+                <c:set var="recordsPerPage" value="${recordsPerPage}" scope="page"/>
             </div>
         </form>
     </div>
@@ -161,7 +146,7 @@ body, html {
         </tr>
         <c:forEach var="shipment" items="${requestScope.shipments}" varStatus="shipmentStatus">
             <tr>
-                <td class="w3-border-right">${shipmentStatus.index + 1}</td>
+                <td class="w3-border-right">${(currentPage - 1)*recordsPerPage + shipmentStatus.index + 1}</td>
                 <td class="w3-border-right">${shipment.orderDate}</td>
                 <td class="w3-border-right">${shipment.cityFrom}</td>
                 <td class="w3-border-right">${shipment.receiver.city}</td>
@@ -195,33 +180,25 @@ body, html {
     </table>
 </div>
 
-<nav aria-label="Navigation">
-    <ul class="pagination">
+<nav class="w3-center" style="padding:16px 16px">
+    <div class="pagination w3-center">
         <c:if test="${currentPage != 1}">
-            <li class="page-item">
-                <a class="page-link" href="packages?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}"> Previous</a>
-            </li>
+            <a href="packages?recordsPerPage=${recordsPerPage}&currentPage=${currentPage-1}&sort=${param.sort}&deliveryFilter=${param.deliveryFilter}&freightFilter=${param.freightFilter}&paymentFilter=${param.paymentFilter}&executionFilter=${param.executionFilter}">&laquo;</a>
         </c:if>
         <c:forEach begin="1" end="${noOfPages}" var="i">
             <c:choose>
                 <c:when test="${currentPage eq i}">
-                    <li class="page-item active"><a class="page-link">
-                        ${i} <span class="sr-only">(current)</span></a>
-                    </li>
+                    <a class="active">${i}</a>
                 </c:when>
                 <c:otherwise>
-                    <li class="page-item">
-                        <a class="page-link" href="packages?recordsPerPage=${recordsPerPage}&currentPage=${i}">${i}</a>
-                    </li>
+                    <a href="packages?recordsPerPage=${recordsPerPage}&currentPage=${i}&sort=${param.sort}&deliveryFilter=${param.deliveryFilter}&freightFilter=${param.freightFilter}&paymentFilter=${param.paymentFilter}&executionFilter=${param.executionFilter}">${i}</a>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
         <c:if test="${currentPage lt noOfPages}">
-            <li class="page-item">
-                <a class="page-link" href="packages?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}">Next</a>
-            </li>
+            <a href="packages?recordsPerPage=${recordsPerPage}&currentPage=${currentPage+1}&sort=${param.sort}&deliveryFilter=${param.deliveryFilter}&freightFilter=${param.freightFilter}&paymentFilter=${param.paymentFilter}&executionFilter=${param.executionFilter}">&raquo;</a>
         </c:if>
-    </ul>
+    </div>
 </nav>
 
 

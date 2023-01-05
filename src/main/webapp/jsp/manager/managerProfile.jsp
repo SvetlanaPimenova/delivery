@@ -122,18 +122,8 @@ body, html {
 <body>
 
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
-        <div class="w3-right w3-hide-small" style="display: inline;">
-            <a href="packages" class="w3-button w3-bar-item" style="display: inline;">PACKAGES</a>
-            <a href="reports" class="w3-button w3-bar-item" style="display: inline;">REPORTS</a>
-            <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
-            <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>
-        </div>
-    </div>
-</div>
+<jsp:include page="/templates/managerMenu.jsp"/>
+
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">

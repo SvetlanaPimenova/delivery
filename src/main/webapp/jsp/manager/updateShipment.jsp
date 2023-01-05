@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -32,18 +35,7 @@ body, html {
 <body>
 
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
-        <div class="w3-right w3-hide-small" style="display: inline;">
-            <a href="packages" class="w3-button w3-bar-item" style="display: inline;">PACKAGES</a>
-            <a href="reports" class="w3-button w3-bar-item" style="display: inline;">REPORTS</a>
-            <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
-            <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>
-        </div>
-    </div>
-</div>
+<jsp:include page="/templates/managerMenu.jsp"/>
 
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
@@ -55,12 +47,12 @@ body, html {
             <input type="hidden" name="shipment_id" value="${currentShipment.id}"><br>
             <div class="w3-row-padding">
                 <select class="w3-input w3-border w3-center" id="newStatus" name="newStatus">
-                    <option value="sent">SENT</option>
-                    <option value="arrived_at_destination">AT DESTINATION</option>
-                    <option value="delivered">DELIVERED</option>
+                    <option value="sent"><fmt:message key="option.filter.execution.sent"/></option>
+                    <option value="arrived_at_destination"><fmt:message key="option.filter.execution.destination"/></option>
+                    <option value="delivered"><fmt:message key="option.filter.execution.delivered"/></option>
                 </select><br>
-                <p>Update execution status?</p><br>
-                <button class="w3-button" type="submit">Yes</button>
+                <p><fmt:message key="update.execution.status"/></p><br>
+                <button class="w3-button" type="submit"><fmt:message key="button.yes"/></button>
             </div>
         </div>
     </form>

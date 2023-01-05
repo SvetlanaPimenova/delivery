@@ -127,7 +127,7 @@ public class User {
         return firstname + " " + lastname + ",\n" +
                 email + ",\n" + phone + ",\n" +
                 city + ", " + street + ",\n" +
-                postalCode + " " + password;
+                postalCode;
     }
 
     public static class UserFields {

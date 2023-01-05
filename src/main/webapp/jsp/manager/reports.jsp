@@ -1,5 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
+
 <html xmlns:c="http://java.sun.com/jsp/jstl/core">
 <head>
     <title>Cargo Delivery Service</title>
@@ -26,33 +30,19 @@ body, html {
   padding: 16px;
 }
 
+</style>
 
-
-
-
-    </style>
 </head>
 
 <body>
 
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
-        <div class="w3-right w3-hide-small" style="display: inline;">
-            <a href="packages" class="w3-button w3-bar-item" style="display: inline;">PACKAGES</a>
-            <a href="reports" class="w3-button w3-bar-item" style="display: inline;">REPORTS</a>
-            <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
-            <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>
-        </div>
-    </div>
-</div>
+<jsp:include page="/templates/managerMenu.jsp"/>
 
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
-        <h3><i class="fa fa-tasks"></i> REPORTS</h3>
+        <h3><i class="fa fa-tasks"></i> <fmt:message key="manager.reports"/></h3>
     </div>
 </header>
 
@@ -61,17 +51,17 @@ body, html {
         <form action="reports" method="post">
             <div class="w3-row-padding">
                 <div class="w3-quarter w3-left">
-                    <label for="searchParameter">Search by:</label>
+                    <label for="searchParameter"><fmt:message key="label.search.by"/>:</label>
                 </div>
             </div>
             <br>
             <div class="w3-row-padding">
                 <div class="w3-third w3-left">
                     <select class="w3-input w3-border" id="searchParameter" name="searchParameter">
-                        <option value="sender">Sender</option>
-                        <option value="city_from">City from</option>
-                        <option value="city_to">City to</option>
-                        <option value="date">Date</option>
+                        <option value="sender"><fmt:message key="option.sender"/></option>
+                        <option value="city_from"><fmt:message key="option.city.from"/></option>
+                        <option value="city_to"><fmt:message key="option.city.to"/></option>
+                        <option value="date"><fmt:message key="option.date"/></option>
                     </select>
                 </div>
                 <div class="w3-third w3-left">
@@ -88,41 +78,39 @@ body, html {
                 </div>
             </div>
         </form>
-        <p class="w3-small">*To perform a search among senders, please enter a phone number in the format
-            +380XXXXXXXXX.</p>
+        <p class="w3-small">*<fmt:message key="search.sender.note"/> +380XXXXXXXXX.</p>
     </div>
 </div>
 <hr>
 <div class="w3-container" style="padding:16px 16px">
     <c:choose>
         <c:when test="${empty requestScope.list && requestScope.user == null}">
-            <p class="w3-center">Nothing was found.</p>
+            <p class="w3-center"><fmt:message key="search.nothing.found"/></p>
         </c:when>
         <c:otherwise>
             <c:if test="${not empty requestScope.list}">
                 <c:set var="searchParameter" value="${searchParameter}" scope="request"/>
                 <c:set var="parameter" value="${parameter}" scope="request"/>
-                <form action="pdf" method="get">
+                <form action="pdf" method="get" target="_blank">
                     <input type="hidden" name="searchParameter" value="${searchParameter}"/>
                     <input type="hidden" name="parameter" value="${parameter}"/>
-                    <button type="submit" class="w3-button"><i class="fa fa-file-pdf-o"></i> DOWNLOAD REPORT</button>
+                    <button type="submit" class="w3-button"><i class="fa fa-file-pdf-o"></i> <fmt:message key="button.download"/></button>
                 </form>
                 <br>
-                <!-- <a href="pdf" class="w3-button"><i class="fa fa-file-pdf-o"></i> DOWNLOAD REPORT</a><br> -->
                 <div class="w3-container w3-padding-16 w3-grayscale w3-card w3-center">
                     <table class="w3-table w3-centered w3-border w3-bordered w3-striped">
                         <tr>
-                            <td class="w3-border-right">№</td>
-                            <td class="w3-border-right">Shipment date</td>
-                            <td class="w3-border-right">From</td>
-                            <td class="w3-border-right">To</td>
-                            <td class="w3-border-right">Freight info</td>
-                            <td class="w3-border-right">Total cost, UAH</td>
-                            <td class="w3-border-right">Delivery type</td>
-                            <td class="w3-border-right">Sender</td>
-                            <td class="w3-border-right">Receiver</td>
-                            <td class="w3-border-right">Payment status</td>
-                            <td class="w3-border-right">Execution status</td>
+                            <td class="w3-border-right"><fmt:message key="number.character"/></td>
+                            <td class="w3-border-right"><fmt:message key="table.shipment.date"/></td>
+                            <td class="w3-border-right"><fmt:message key="calculator.label.from"/></td>
+                            <td class="w3-border-right"><fmt:message key="calculator.label.to"/></td>
+                            <td class="w3-border-right"><fmt:message key="table.freight.info"/></td>
+                            <td class="w3-border-right"><fmt:message key="table.total.cost"/></td>
+                            <td class="w3-border-right"><fmt:message key="calculator.label.delivery"/></td>
+                            <td class="w3-border-right"><fmt:message key="option.sender"/></td>
+                            <td class="w3-border-right"><fmt:message key="table.receiver"/></td>
+                            <td class="w3-border-right"><fmt:message key="option.filter.payment"/></td>
+                            <td class="w3-border-right"><fmt:message key="option.filter.execution"/></td>
                         </tr>
                         <c:forEach var="order" items="${requestScope.list}" varStatus="orderStatus">
                             <tr>
@@ -132,7 +120,7 @@ body, html {
                                 <td class="w3-border-right">${order.receiver.city}</td>
                                 <td class="w3-border-right">${order.freight.type}, ${order.freight.weight} kg,<br>
                                     ${order.freight.length} x ${order.freight.width} x ${order.freight.height} cm,<br>
-                                    Estimated cost: ${order.freight.estimatedCost} UAH
+                                    <fmt:message key="calculator.label.cost"/>: ${order.freight.estimatedCost}
                                 </td>
                                 <td class="w3-border-right">${order.totalCost}</td>
                                 <td class="w3-border-right">${order.deliveryType}</td>
@@ -164,25 +152,25 @@ body, html {
                     <div class="w3-container w3-left">
                         <p>${user.phone}, ${user.email}</p>
                         <p>${user.city}, ${user.street}, ${user.postalCode}.</p>
-                        <p>Current account: ${user.account} UAH.</p>
+                        <p><fmt:message key="account.current"/> ${user.account} <fmt:message key="uah"/>.</p>
                     </div>
                     <c:choose>
                         <c:when test="${empty requestScope.userShipments}">
-                            <p class="w3-center">User has not created any shipment yet.</p>
+                            <p class="w3-center"><fmt:message key="user.no.shipments"/></p>
                         </c:when>
                         <c:otherwise>
                             <table class="w3-table w3-centered w3-border w3-bordered w3-striped">
                                 <tr>
-                                    <td class="w3-border-right">№</td>
-                                    <td class="w3-border-right">Shipment date</td>
-                                    <td class="w3-border-right">From</td>
-                                    <td class="w3-border-right">To</td>
-                                    <td class="w3-border-right">Freight info</td>
-                                    <td class="w3-border-right">Total cost, UAH</td>
-                                    <td class="w3-border-right">Delivery type</td>
-                                    <td class="w3-border-right">Receiver</td>
-                                    <td class="w3-border-right">Payment status</td>
-                                    <td class="w3-border-right">Execution status</td>
+                                    <td class="w3-border-right"><fmt:message key="number.character"/></td>
+                                    <td class="w3-border-right"><fmt:message key="table.shipment.date"/></td>
+                                    <td class="w3-border-right"><fmt:message key="calculator.label.from"/></td>
+                                    <td class="w3-border-right"><fmt:message key="calculator.label.to"/></td>
+                                    <td class="w3-border-right"><fmt:message key="table.freight.info"/></td>
+                                    <td class="w3-border-right"><fmt:message key="table.total.cost"/></td>
+                                    <td class="w3-border-right"><fmt:message key="calculator.label.delivery"/></td>
+                                    <td class="w3-border-right"><fmt:message key="table.receiver"/></td>
+                                    <td class="w3-border-right"><fmt:message key="option.filter.payment"/></td>
+                                    <td class="w3-border-right"><fmt:message key="option.filter.execution"/></td>
                                 </tr>
                                 <c:forEach var="shipment" items="${requestScope.userShipments}" varStatus="shipmentStatus">
                                     <tr>
@@ -194,7 +182,7 @@ body, html {
                                             kg,<br>
                                             ${shipment.freight.length} x ${shipment.freight.width} x
                                             ${shipment.freight.height} cm,<br>
-                                            Estimated cost: ${shipment.freight.estimatedCost} UAH
+                                            <fmt:message key="calculator.label.cost"/>: ${shipment.freight.estimatedCost}
                                         </td>
                                         <td class="w3-border-right">${shipment.totalCost}</td>
                                         <td class="w3-border-right">${shipment.deliveryType}</td>

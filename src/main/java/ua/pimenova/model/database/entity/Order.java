@@ -123,6 +123,13 @@ public class Order {
         this.sender = sender;
     }
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderDate=" + orderDate + "}";
+    }
+
     public static class OrderFields {
         public static final String ID = "id";
         public static final String DATE = "date";

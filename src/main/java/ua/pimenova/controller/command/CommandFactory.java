@@ -45,7 +45,7 @@ public class CommandFactory {
         commands.put("home", new ShowHomePageCommand());
         commands.put("profile", new ShowProfileCommand());
         commands.put("update", new UpdateProfileCommand(userService));
-        commands.put("pdf", new PdfBuilderCommand());
+        commands.put("pdf", new PdfBuilderCommand(orderService, userService, receiverService));
 
         //user commands
         commands.put("createOrder", new CreateOrderCommand(orderService));

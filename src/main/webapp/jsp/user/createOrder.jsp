@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -72,24 +75,12 @@ body, html {
 <body>
 
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-    <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
-        <div class="w3-right w3-hide-small" style="display: inline;">
-            <a href="orders" class="w3-button w3-bar-item" style="display: inline;">MY PACKAGES</a>
-            <a href="pageCreate" class="w3-button w3-bar-item" style="display: inline;">CREATE SHIPMENT</a>
-            <a href="account" class="w3-button w3-bar-item" style="display: inline;">ACCOUNT ${sessionScope.user.account} UAH</a>
-            <a href="profile" class="w3-bar-item w3-button"><i class="fa fa-user-circle-o"></i> PROFILE</a>
-            <a href="logout" class="w3-button w3-bar-item" style="display: inline;">LOGOUT</a>
-        </div>
-    </div>
-</div>
+<jsp:include page="/templates/userMenu.jsp"/>
 
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
-        <h3><i class="fa fa-edit"></i> CREATE SHIPMENT</h3>
+        <h3><i class="fa fa-edit"></i> <fmt:message key="create.shipment"/></h3>
     </div>
 </header>
 
@@ -99,45 +90,57 @@ body, html {
         <c:when test="${requestScope.newOrder == null}">
             <form action="createOrder" method="post">
                 <div class="w3-row-padding w3-margin-bottom">
-                    <h4 class="w3-left">Shipping options</h4><br>
+                    <h4 class="w3-left"><fmt:message key="shipping.options"/></h4><br>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
-                        <label>Route</label>
+                        <label><fmt:message key="calculator.section.route"/></label>
                     </div>
                     <div class="w3-third w3-margin-bottom">
-                        <label for="cityfrom">From</label>
-                        <input class="w3-input w3-border" list="citiesfrom" placeholder="Locality" id="cityfrom"
+                        <label for="cityfrom"><fmt:message key="calculator.label.from"/></label>
+                        <fmt:message key="calculator.placeholder.route" var="placeholderRoute"/>
+                        <fmt:message key="calculator.city.vinnytsia" var="cityVinnytsia"/>
+                        <fmt:message key="calculator.city.dnipro" var="cityDnipro"/>
+                        <fmt:message key="calculator.city.zaporizhzhia" var="cityZaporizhzhia"/>
+                        <fmt:message key="calculator.city.kyiv" var="cityKyiv"/>
+                        <fmt:message key="calculator.city.kryvyi.rih" var="cityKryvyiRih"/>
+                        <fmt:message key="calculator.city.lviv" var="cityLviv"/>
+                        <fmt:message key="calculator.city.mykolayiv" var="cityMykolayiv"/>
+                        <fmt:message key="calculator.city.odesa" var="cityOdesa"/>
+                        <fmt:message key="calculator.city.poltava" var="cityPoltava"/>
+                        <fmt:message key="calculator.city.kharkiv" var="cityKharkiv"/>
+
+                        <input class="w3-input w3-border" list="citiesfrom" placeholder="${placeholderRoute}" id="cityfrom"
                                name="cityfrom" required>
                         <datalist id="citiesfrom">
-                            <option value="Vinnytsia">
-                            <option value="Dnipro">
-                            <option value="Zaporizhzhia">
-                            <option value="Kyiv">
-                            <option value="Kryvyi Rih">
-                            <option value="Lviv">
-                            <option value="Mykolayiv">
-                            <option value="Odesa">
-                            <option value="Poltava">
-                            <option value="Kharkiv">
+                            <option value="${cityVinnytsia}">
+                            <option value="${cityDnipro}">
+                            <option value="${cityZaporizhzhia}">
+                            <option value="${cityKyiv}">
+                            <option value="${cityKryvyiRih}">
+                            <option value="${cityLviv}">
+                            <option value="${cityMykolayiv}">
+                            <option value="${cityOdesa}">
+                            <option value="${cityPoltava}">
+                            <option value="${cityKharkiv}">
                         </datalist>
                     </div>
                     <div class="w3-third w3-margin-bottom">
-                        <label for="cityto">To</label>
-                        <input class="w3-input w3-border" list="citiesto" placeholder="Locality" id="cityto"
+                        <label for="cityto"><fmt:message key="calculator.label.to"/></label>
+                        <input class="w3-input w3-border" list="citiesto" placeholder="${placeholderRoute}" id="cityto"
                                name="cityto"
                                required>
                         <datalist id="citiesto">
-                            <option value="Vinnytsia">
-                            <option value="Dnipro">
-                            <option value="Zaporizhzhia">
-                            <option value="Kyiv">
-                            <option value="Kryvyi Rih">
-                            <option value="Lviv">
-                            <option value="Mykolayiv">
-                            <option value="Odesa">
-                            <option value="Poltava">
-                            <option value="Kharkiv">
+                            <option value="${cityVinnytsia}">
+                            <option value="${cityDnipro}">
+                            <option value="${cityZaporizhzhia}">
+                            <option value="${cityKyiv}">
+                            <option value="${cityKryvyiRih}">
+                            <option value="${cityLviv}">
+                            <option value="${cityMykolayiv}">
+                            <option value="${cityOdesa}">
+                            <option value="${cityPoltava}">
+                            <option value="${cityKharkiv}">
                         </datalist>
                     </div>
                 </div>
@@ -146,47 +149,45 @@ body, html {
                         <br>
                     </div>
                     <div class="w3-twothird w3-margin-bottom">
-                        <p class="w3-small w3-left-align">*Enter the city you will be shipping from and the city
-                            where your
-                            shipment should arrive</p>
+                        <p class="w3-small w3-left-align"><fmt:message key="calculator.route.note"/></p>
                     </div>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
-                        <label for="freighttype">Freight type</label>
+                        <label for="freighttype"><fmt:message key="calculator.label.freight"/></label>
                     </div>
                     <div class="w3-twothird w3-margin-bottom">
                         <select class="w3-input w3-border" id="freighttype" name="freighttype">
-                            <option value="goods">GOODS</option>
-                            <option value="glass">GLASS</option>
-                            <option value="compact">DOCUMENTS</option>
+                            <option value="goods"><fmt:message key="calculator.freight.goods"/></option>
+                            <option value="glass"><fmt:message key="calculator.freight.glass"/></option>
+                            <option value="compact"><fmt:message key="calculator.freight.documents"/></option>
                         </select>
                     </div>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
-                        <label for="deliverytype">Delivery type</label>
+                        <label for="deliverytype"><fmt:message key="calculator.label.delivery"/></label>
                     </div>
                     <div class="w3-twothird w3-margin-bottom">
                         <select class="w3-input w3-border" id="deliverytype" name="deliverytype">
-                            <option value="to_the_branch">TO THE BRANCH</option>
-                            <option value="courier">BY COURIER</option>
+                            <option value="to_the_branch"><fmt:message key="calculator.delivery.branch"/></option>
+                            <option value="courier"><fmt:message key="calculator.delivery.courier"/></option>
                         </select>
                     </div>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
-                        <label for="weight">Weight, kg</label>
+                        <label for="weight"><fmt:message key="calculator.freight.weight"/></label>
                     </div>
                     <div class="w3-twothird w3-margin-bottom">
                         <div class="w3-third w3-margin-bottom">
-                            <label for="length">Length, cm</label>
+                            <label for="length"><fmt:message key="calculator.freight.length"/></label>
                         </div>
                         <div class="w3-third w3-margin-bottom">
-                            <label for="width">Width, cm</label>
+                            <label for="width"><fmt:message key="calculator.freight.width"/></label>
                         </div>
                         <div class="w3-third w3-margin-bottom">
-                            <label for="height">Height, cm</label>
+                            <label for="height"><fmt:message key="calculator.freight.height"/></label>
                         </div>
                     </div>
                 </div>
@@ -213,7 +214,7 @@ body, html {
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
-                        <label for="cost">Estimated cost, UAH</label>
+                        <label for="cost"><fmt:message key="calculator.label.cost"/></label>
                     </div>
                     <div class="w3-twothird w3-margin-bottom">
                         <input type="number" id="cost" name="cost" placeholder="0.0">
@@ -221,21 +222,21 @@ body, html {
                 </div>
                 <hr>
                 <div class="w3-row-padding w3-margin-bottom">
-                    <h4 class="w3-left">Receiver info</h4><br>
+                    <h4 class="w3-left"><fmt:message key="shipping.receiver.info"/></h4><br>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-half w3-margin-bottom">
-                        <label for="rfname">First name:</label><br>
+                        <label for="rfname"><fmt:message key="label.firstname"/>:</label><br>
                         <input class="w3-input w3-border" type="text" id="rfname" name="rfname">
                     </div>
                     <div class="w3-half w3-margin-bottom">
-                        <label for="rlname">Last name:</label><br>
+                        <label for="rlname"><fmt:message key="label.lastname"/>:</label><br>
                         <input class="w3-input w3-border" type="text" id="rlname" name="rlname">
                     </div>
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-half w3-margin-bottom">
-                        <label for="rphone">Phone:</label><br>
+                        <label for="rphone"><fmt:message key="contact.section.phone"/>:</label><br>
                         <input class="w3-input w3-border" type="tel" name="rphone"
                                id="rphone" pattern="^\+?38?(0\d{2}\d{3}\d{2}\d{2})$" maxlength="13">
                     </div>
@@ -245,22 +246,21 @@ body, html {
                 </div>
                 <div class="w3-row-padding">
                     <div class="w3-half w3-margin-bottom">
-                        <label for="rstreet">Street:</label><br>
+                        <label for="rstreet"><fmt:message key="label.street"/>:</label><br>
                         <input class="w3-input w3-border" type="text" id="rstreet" name="rstreet"><br>
                     </div>
                     <div class="w3-half w3-margin-bottom">
-                        <label for="rpcode">Postal code:</label><br>
+                        <label for="rpcode"><fmt:message key="label.postalcode"/>:</label><br>
                         <input class="w3-input w3-border" type="text" id="rpcode" name="rpcode">
                     </div>
                 </div>
                 <div class="w3-row-padding w3-center">
-                    <button class="w3-button" type="submit">Submit</button>
+                    <button class="w3-button" type="submit"><fmt:message key="button.submit"/></button>
                 </div>
             </form>
         </c:when>
         <c:otherwise>
-            <p>Shipment has been created successfully! You can view detailed information
-                <a href="orders">here</a></p>
+            <p><fmt:message key="shipping.successfully"/> <a href="orders"><fmt:message key="here"/></a></p>
         </c:otherwise>
     </c:choose>
 </div>

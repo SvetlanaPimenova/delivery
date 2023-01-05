@@ -65,7 +65,7 @@ public class OrderDaoImpl implements OrderDao {
                     resultSet.getString("r.city"),
                     resultSet.getString("r.street"),
                     resultSet.getString("r.postal_code")));
-            order.setSender(new User(resultSet.getInt("u.id"),
+            order.setSender(new User(resultSet.getInt("sender_info"),
                     resultSet.getString(User.UserFields.PASSWORD),
                     resultSet.getString("u.firstname"),
                     resultSet.getString("u.lastname"),
@@ -103,7 +103,7 @@ public class OrderDaoImpl implements OrderDao {
                     resultSet.getString("r.city"),
                     resultSet.getString("r.street"),
                     resultSet.getString("r.postal_code"));
-            User sender = new User(resultSet.getInt("u.id"),
+            User sender = new User(resultSet.getInt("sender_info"),
                     resultSet.getString(User.UserFields.PASSWORD),
                     resultSet.getString("u.firstname"),
                     resultSet.getString("u.lastname"),
@@ -269,6 +269,21 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> getAll(String query) throws DaoException {
+        List<Order> orders = new ArrayList<>();
+
+        try(Connection connection = HikariCPDataSource.getConnection();
+            Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SqlQuery.OrdersQuery.SELECT_ALL_ORDERS + query);
+            orders = getListOfOrders(orders, resultSet);
+        } catch (SQLException e) {
+//            logger.error(e.getMessage());
+            throw new DaoException(e);
+        }
+        return orders;
+    }
+
+    @Override
     public List<Order> getAllOrdersByReceiver(Receiver receiver) throws DaoException {
         List<Order> orders = new ArrayList<>();
         try(Connection connection = HikariCPDataSource.getConnection();
@@ -308,5 +323,20 @@ public class OrderDaoImpl implements OrderDao {
             throw new DaoException(e);
         }
         return orders;
+    }
+    @Override
+    public int getNumberOfRows(String query) throws DaoException {
+        int numOfRows = 0;
+        try(Connection connection = HikariCPDataSource.getConnection();
+            Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(SqlQuery.OrdersQuery.NUMBER_OF_ROWS + query);
+            while (resultSet.next()) {
+                numOfRows = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+//            logger.error(e.getMessage());
+            throw new DaoException(e);
+        }
+        return numOfRows;
     }
 }

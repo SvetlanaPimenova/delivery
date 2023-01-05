@@ -12,8 +12,9 @@ import java.util.List;
 public interface OrderDao extends Dao<Order> {
 
     List<Order> getAllOrdersByDate(Date date) throws DaoException;
+    List<Order> getAll(String query) throws DaoException;
     List<Order> getAllOrdersByReceiver(Receiver receiver) throws DaoException;
     List<Order> getAllOrdersBySender(User user) throws DaoException;
     List<Order> getAllOrdersByCityFrom(String city) throws DaoException;
-
+    int getNumberOfRows(String query) throws DaoException;
 }

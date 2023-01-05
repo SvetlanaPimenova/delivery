@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -61,6 +64,44 @@ body, html {
   animation: animatezoom 0.6s
 }
 
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  margin: 0;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content form {
+  float: bottom;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 @-webkit-keyframes animatezoom {
   from {-webkit-transform: scale(0)}
   to {-webkit-transform: scale(1)}
@@ -81,14 +122,24 @@ body, html {
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="home" class="w3-bar-item w3-button w3-wide">HOME</a>
-        <!-- Right-sided navbar links -->
+        <a href="home" class="w3-bar-item w3-button w3-wide"><fmt:message key="home"/></a>
+        <div class="dropdown">
+            <button class="w3-bar-item w3-button dropbtn"><i class="fa fa-globe"></i> <fmt:message key="language"/></button>
+            <div class="dropdown-content">
+                <form method="post">
+                    <select name="locale" onchange='submit()'>
+                        <option value="en" ${sessionScope.locale eq 'en' ? 'selected' : ''}> <fmt:message key="en"/></option>
+                        <option value="ua" ${sessionScope.locale eq 'ua' ? 'selected' : ''}> <fmt:message key="ua"/></option>
+                    </select>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
-        <h3><i class="fa fa-sign-in"></i> SIGN-UP</h3>
+        <h3><i class="fa fa-sign-in"></i> <fmt:message key="signup"/></h3>
     </div>
 </header>
 
@@ -96,52 +147,63 @@ body, html {
 <div class="w3-container w3-padding-16 w3-grayscale w3-card w3-center">
     <form action="signup" method="post" id="regForm">
         <div class="w3-container w3-padding-16">
-            <p class="w3-center w3-large">Please fill in this form to create an account.</p>
+            <p class="w3-center w3-large"><fmt:message key="signup.text"/></p>
             <hr>
-            <p class="w3-left">Name:</p>
-            <input class="w3-input w3-border" type="text" placeholder="Enter first name..." name="firstname"
+            <p class="w3-left"><fmt:message key="signup.label.name"/>:</p>
+            <fmt:message key="signup.placeholder.firstname" var="placeholderFirstname"/>
+            <fmt:message key="signup.placeholder.lastname" var="placeholderLastname"/>
+            <input class="w3-input w3-border" type="text" placeholder="${placeholderFirstname}" name="firstname"
                    id="firstname" required><br>
-            <input class="w3-input w3-border" type="text" placeholder="Enter last name..." name="lastname"
+            <input class="w3-input w3-border" type="text" placeholder="${placeholderLastname}" name="lastname"
                    id="lastname" required><br>
-            <p class="w3-left">Contact Info:</p>
-            <input class="w3-input w3-border" type="text" placeholder="Enter e-mail..." name="email"
+            <p class="w3-left"><fmt:message key="signup.label.contact"/>:</p>
+            <fmt:message key="login.placeholder.email" var="placeholderEmail"/>
+            <input class="w3-input w3-border" type="text" placeholder="${placeholderEmail}" name="email"
                    id="email" required>
             <c:if test="${errorEmail != null}">
                 <p class="w3-left" style="color: red;">${errorEmail}</p>
             </c:if><br>
-            <input class="w3-input w3-border" type="tel" placeholder="Enter phone..." name="phone"
+            <fmt:message key="signup.placeholder.phone" var="placeholderPhone"/>
+            <input class="w3-input w3-border" type="tel" placeholder="${placeholderPhone}" name="phone"
                    id="phone" pattern="^\+?380\d{2}\d{3}\d{2}\d{2}$" maxlength="13"
                    title="+380XXXXXXXXX" required>
             <c:if test="${errorPhone != null}">
                 <p class="w3-left" style="color: red;">${errorPhone}</p>
             </c:if><br>
-            <p class="w3-left">Address:</p>
-            <input class="w3-input w3-border" type="text" placeholder="Enter city..." name="city" id="city"
+            <p class="w3-left"><fmt:message key="signup.label.address"/>:</p>
+            <fmt:message key="signup.placeholder.city" var="placeholderCity"/>
+            <fmt:message key="signup.placeholder.street" var="placeholderStreet"/>
+            <fmt:message key="signup.placeholder.postalcode" var="placeholderPostalcode"/>
+
+            <input class="w3-input w3-border" type="text" placeholder="${placeholderCity}" name="city" id="city"
                    required><br>
-            <input class="w3-input w3-border" type="text" placeholder="Enter street..." name="street"
+            <input class="w3-input w3-border" type="text" placeholder="${placeholderStreet}" name="street"
                    id="street" required><br>
-            <input class="w3-input w3-border" type="text" placeholder="Enter postal code..."
+            <input class="w3-input w3-border" type="text" placeholder="${placeholderPostalcode}"
                    name="postalcode" id="postalcode" required><br>
-            <p class="w3-left">Password:</p>
-            <input class="w3-input w3-border" type="password" placeholder="Enter password..." id="password"
+            <p class="w3-left"><fmt:message key="login.label.password"/>:</p>
+            <fmt:message key="login.placeholder.password" var="placeholderPassword"/>
+            <fmt:message key="signup.password.title" var="passwordTitle"/>
+            <fmt:message key="signup.repeat.password" var="repeatPassword"/>
+            <input class="w3-input w3-border" type="password" placeholder="${placeholderPassword}" id="password"
                    name="password" onkeyup="matchPassword()" pattern="(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{8,}"
-                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                   title="${passwordTitle}"
                    required><br>
-            <input class="w3-input w3-border" type="password" placeholder="Repeat password..." id="reppass"
+            <input class="w3-input w3-border" type="password" placeholder="${repeatPassword}" id="reppass"
                    name="reppass"
                    required onkeyup="matchPassword()"><br>
             <span id='wrong_pass'></span><br>
-            <p class="w3-left"><input type="checkbox" onclick="myFunction2(); myFunction3();"> Show Password</p>
+            <p class="w3-left"><input type="checkbox" onclick="myFunction2(); myFunction3();"> <fmt:message key="login.show.password"/></p>
             <br>
             <div id="message" class="w3-container w3-small">
-                <p>Password must contain the following:</p>
-                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-                <p id="number" class="invalid">A <b>number</b></p>
-                <p id="passwordlength" class="invalid">Minimum <b>8 characters</b></p>
+                <p><fmt:message key="password.must.contain"/>:</p>
+                <p id="letter" class="invalid"><fmt:message key="lowercase.letter"/></p>
+                <p id="capital" class="invalid"><fmt:message key="undercase.letter"/></p>
+                <p id="number" class="invalid"><fmt:message key="password.number"/></p>
+                <p id="passwordlength" class="invalid"><fmt:message key="password.characters"/></p>
             </div>
             <div class="w3-center">
-                <button class="w3-button" type="submit">Submit</button>
+                <button class="w3-button" type="submit"><fmt:message key="button.submit"/></button>
             </div>
         </div>
     </form>
@@ -207,51 +269,6 @@ myInput.onkeyup = function() {
 }
 
 </script>
-<!--
-<script>
-       // Run on page load
-    window.onload = function() {
-
-        // If sessionStorage is storing default values (ex. name), exit the function and do not restore data
-        if (sessionStorage.getItem('firstname') == "Enter first name...") {
-            return;
-        }
-
-        // If values are not blank, restore them to the fields
-        var firstname = sessionStorage.getItem('firstname');
-        if (firstname !== null) $('#firstname').val(firstname);
-
-        var lastname = sessionStorage.getItem('lastname');
-        if (lastname !== null) $('#lastname').val(lastname);
-
-        var email = sessionStorage.getItem('email');
-        if (email !== null) $('#email').val(email);
-
-        var phone = sessionStorage.getItem('phone');
-        if (phone !== null) $('#phone').val(phone);
-
-        var city = sessionStorage.getItem('city');
-        if (city!== null) $('#city').val(city);
-
-        var street = sessionStorage.getItem('street');
-        if (street!== null) $('#street').val(street);
-
-        var postalcode = sessionStorage.getItem('postalcode');
-        if (postalcode!== null) $('#postalcode').val(postalcode);
-    }
-
-    // Before refreshing the page, save the form data to sessionStorage
-    window.onbeforeunload = function() {
-        sessionStorage.setItem("firstname", $('#firstname').val());
-        sessionStorage.setItem("lastname", $('#lastname').val());
-        sessionStorage.setItem("email", $('#email').val());
-        sessionStorage.setItem("phone", $('#phone').val());
-        sessionStorage.setItem("city", $('#city').val());
-        sessionStorage.setItem("street", $('#street').val());
-        sessionStorage.setItem("postalcode", $('#postalcode').val());
-    }
-</script>
--->
 
 <script src="resources/js/showPassword.js"></script>
 <script src="resources/js/confirmPassword.js"></script>

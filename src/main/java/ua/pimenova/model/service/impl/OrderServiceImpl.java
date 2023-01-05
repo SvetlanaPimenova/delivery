@@ -29,6 +29,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAll(String query) throws DaoException {
+        return orderDao.getAll(query);
+    }
+
+    @Override
     public Order create(Order order) throws DaoException {
         return orderDao.create(order);
     }
@@ -61,5 +66,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrdersByCityFrom(String city) throws DaoException {
         return orderDao.getAllOrdersByCityFrom(city);
+    }
+    @Override
+    public int getNumberOfRows(String query) throws DaoException {
+        return orderDao.getNumberOfRows(query);
     }
 }

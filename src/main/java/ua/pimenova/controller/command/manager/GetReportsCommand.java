@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ua.pimenova.controller.command.ICommand;
 import ua.pimenova.controller.constants.Pages;
+import ua.pimenova.model.database.builder.QueryBuilder;
 import ua.pimenova.model.database.entity.Order;
 import ua.pimenova.model.database.entity.Receiver;
 import ua.pimenova.model.database.entity.User;
@@ -106,6 +107,7 @@ public class GetReportsCommand implements ICommand {
         } catch (DaoException e) {
             e.printStackTrace();
         }
+        request.setAttribute("parameter", parameter);
         return orders;
     }
 
@@ -119,6 +121,7 @@ public class GetReportsCommand implements ICommand {
         } catch (DaoException e) {
             e.printStackTrace();
         }
+        request.setAttribute("parameter", parameter);
         return orders;
     }
 
@@ -133,6 +136,7 @@ public class GetReportsCommand implements ICommand {
         } catch (DaoException e) {
             e.printStackTrace();
         }
+        request.setAttribute("parameter", parameter);
         return user;
     }
 }
