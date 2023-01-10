@@ -14,9 +14,9 @@ import ua.pimenova.model.service.FreightService;
 import ua.pimenova.model.service.OrderService;
 import ua.pimenova.model.service.ReceiverService;
 import ua.pimenova.model.util.Calculator;
-
-
 import java.io.IOException;
+import static ua.pimenova.controller.command.CommandUtil.*;
+import static ua.pimenova.controller.constants.Commands.*;
 
 public class UpdateOrderByUserCommand implements ICommand {
 
@@ -34,6 +34,22 @@ public class UpdateOrderByUserCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        return isMethodPost(request) ? executePost(request) : executeGet(request);
+    }
+
+    private String executeGet(HttpServletRequest request) {
+        getAttributeFromSessionToRequest(request,"order_id");
+        getAttributeFromSessionToRequest(request, "isUpdated");
+        return getURL(request) + formURL(request);
+    }
+
+    private String formURL(HttpServletRequest request) {
+        String orderId = (String) request.getAttribute("order_id");
+        String isUpdated = (String) request.getAttribute("isUpdated");
+        return "?order_id=" + orderId + "&isUpdated=" + isUpdated;
+    }
+
+    private String executePost(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("order_id"));
         try {
             Order order = orderService.getByID(id);
@@ -47,9 +63,11 @@ public class UpdateOrderByUserCommand implements ICommand {
                 order = setNewOrder(request, order, newFreight, newReceiver);
                 isUpdated = orderService.update(order);
             }
-            request.setAttribute("isUpdated", isUpdated);
-            request.setAttribute("currentOrder", order);
-            return Pages.UPDATE_ORDER_PAGE;
+            request.getSession().setAttribute("isUpdated", isUpdated);
+            request.getSession().setAttribute("currentOrder", order);
+            request.getSession().setAttribute("order_id", request.getParameter("order_id"));
+            request.getSession().setAttribute("url", SHOW_PAGE_UPDATE_ORDER);
+            return request.getContextPath() + UPDATE_ORDER_BY_USER;
         } catch (DaoException e) {
             e.printStackTrace();
             return Pages.PAGE_ERROR;
