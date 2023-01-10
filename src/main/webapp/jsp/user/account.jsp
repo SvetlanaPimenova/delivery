@@ -88,7 +88,7 @@ body, html {
         <h5><fmt:message key="account.current"/>  ${sessionScope.user.account}  <fmt:message key="uah"/></h5><br>
         <form action="top_up" method="post">
             <label for="account"><fmt:message key="account.topup"/></label>
-            <input type="number" id="account" name="account" placeholder="0"><br>
+            <input type="number" id="account" name="account" placeholder="0" min="0.0"><br>
             <button class="w3-button" type="submit"><fmt:message key="button.topup"/></button>
         </form>
     </div>

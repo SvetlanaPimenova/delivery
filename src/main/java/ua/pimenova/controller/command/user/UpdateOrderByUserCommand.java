@@ -75,6 +75,7 @@ public class UpdateOrderByUserCommand implements ICommand {
     }
 
     private Freight setNewFreight(HttpServletRequest request, Freight freight) {
+        System.out.println(request.getParameter("freighttype").toUpperCase());
         freight.setType(Freight.FreightType.valueOf(request.getParameter("freighttype").toUpperCase()));
         freight.setWeight(Double.parseDouble(request.getParameter("weight")));
         freight.setLength(Double.parseDouble(request.getParameter("length")));
