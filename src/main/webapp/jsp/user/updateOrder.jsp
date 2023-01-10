@@ -40,7 +40,7 @@ body, html {
 <!-- Update freight and receiver -->
 <div class="w3-container" style="padding:16px 16px">
     <c:choose>
-        <c:when test="${requestScope.isUpdated == false}">
+        <c:when test="${isUpdated == false}">
             <form action="updateOrder_user" method="post">
                 <input type="hidden" id="order_id" name="order_id" value="${currentOrder.id}"><br>
                 <div class="w3-row-padding w3-margin-bottom">

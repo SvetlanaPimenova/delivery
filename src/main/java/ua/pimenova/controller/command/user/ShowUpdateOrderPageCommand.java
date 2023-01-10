@@ -22,6 +22,10 @@ public class ShowUpdateOrderPageCommand implements ICommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("order_id"));
+        String s = request.getParameter("isUpdated");
+        if(s != null && s.equalsIgnoreCase("true")) {
+            return Pages.UPDATE_ORDER_PAGE;
+        }
         try {
             Order order = orderService.getByID(id);
             if(order != null) {

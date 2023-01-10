@@ -126,7 +126,7 @@ body, html {
         <div class="dropdown">
             <button class="w3-bar-item w3-button dropbtn"><i class="fa fa-globe"></i> <fmt:message key="language"/></button>
             <div class="dropdown-content">
-                <form method="post">
+                <form method="get">
                     <select name="locale" onchange='submit()'>
                         <option value="en" ${sessionScope.locale eq 'en' ? 'selected' : ''}> <fmt:message key="en"/></option>
                         <option value="ua" ${sessionScope.locale eq 'ua' ? 'selected' : ''}> <fmt:message key="ua"/></option>

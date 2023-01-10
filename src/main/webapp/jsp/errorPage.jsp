@@ -87,7 +87,7 @@ body, html {
 <header class="w3-container" id="home">
     <div class="w3-center" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
         <h3><fmt:message key="error.message"/></h3>
-        <h6>${requestScope.errorMessage}</h6>
+        <h6>${errorMessage}</h6>
         <h6><fmt:message key="error.return"/> <a href="home"><fmt:message key="home"/></a></h6>
     </div>
 </header>

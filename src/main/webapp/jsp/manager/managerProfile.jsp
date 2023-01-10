@@ -1,5 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
+
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -127,7 +131,7 @@ body, html {
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
-        <h3><i class="fa fa-user-circle-o"></i> USER PROFILE</h3>
+        <h3><i class="fa fa-user-circle-o"></i> <fmt:message key="user.profile"/></h3>
     </div>
 </header>
 
@@ -135,23 +139,23 @@ body, html {
 <div class="w3-container" style="padding:16px 16px">
     <div class="tab">
         <button class="tablinks" onclick="openTab(event, 'personalData')" id="defaultOpen">
-            <i class="fa fa-vcard-o"></i> Personal Data</button>
+            <i class="fa fa-vcard-o"></i> <fmt:message key="label.personal.data"/></button>
         <button class="tablinks" onclick="openTab(event, 'contacts')">
-            <i class="fa fa-phone"></i> Contacts</button>
-        <button class="tablinks" onclick="openTab(event, 'changePassword')"> Change Password</button>
+            <i class="fa fa-phone"></i> <fmt:message key="label.contacts"/></button>
+        <button class="tablinks" onclick="openTab(event, 'changePassword')"> <fmt:message key="label.change.password"/></button>
     </div>
     <div id="personalData" class="tabcontent">
         <c:choose>
             <c:when test="${requestScope.message == null}">
                 <form action="update" method="post">
                     <input type="hidden" id="updateAction1" name="updateAction" value="personalData">
-                    <label for="firstname">First name:</label><br>
+                    <label for="firstname"><fmt:message key="label.firstname"/>:</label><br>
                     <input class="w3-input w3-border" type="text" name="firstname" id="firstname" value="${sessionScope.user.firstname}"><br>
-                    <label for="lastname">Last name:</label><br>
+                    <label for="lastname"><fmt:message key="label.lastname"/>:</label><br>
                     <input class="w3-input w3-border" type="text" name="lastname" id="lastname" value="${sessionScope.user.lastname}"><br>
                     <div class="w3-row-padding w3-center">
-                        <button class="w3-button" type="submit">Submit</button>
-                        <button class="w3-button" type="reset">Reset</button>
+                        <button class="w3-button" type="submit"><fmt:message key="button.submit"/></button>
+                        <button class="w3-button" type="reset"><fmt:message key="calculator.button.reset"/></button>
                     </div>
                 </form>
             </c:when>
@@ -169,28 +173,28 @@ body, html {
                     <input type="hidden" id="updateAction2" name="updateAction" value="contactData">
                     <div class="w3-row-padding w3-left">
                         <div class="w3-half">
-                            <label for="phone">Phone:</label><br>
-                            <p class="w3-left w3-small">* Phone numbers are used to restore access and send important messages.</p><br>
+                            <label for="phone"><fmt:message key="contact.section.phone"/>:</label><br>
+                            <p class="w3-left w3-small">* <fmt:message key="phone.message"/></p><br>
                             <input class="w3-input w3-border" type="tel" value="${sessionScope.user.phone}" name="phone"
                                    id="phone" pattern="^\+380\d{2}\d{3}\d{2}\d{2}$" maxlength="13"
                                    title="+380XXXXXXXXX"><br>
                         </div>
                         <div class="w3-half">
-                            <label for="email">E-mail:</label><br>
-                            <p class="w3-left w3-small">* E-mail is used to log in to profile, restore access and send important messages.</p><br>
+                            <label for="email"><fmt:message key="login.label.email"/>:</label><br>
+                            <p class="w3-left w3-small">* <fmt:message key="email.message"/></p><br>
                             <input class="w3-input w3-border" type="text" value="${sessionScope.user.email}" name="email"
                                    id="email">
                         </div>
                     </div>
-                    <label for="city">City:</label><br>
+                    <label for="city"><fmt:message key="label.city"/>:</label><br>
                     <input class="w3-input w3-border" type="text" value="${sessionScope.user.city}" name="city" id="city"><br>
-                    <label for="street">Street:</label><br>
+                    <label for="street"><fmt:message key="label.street"/>:</label><br>
                     <input class="w3-input w3-border" type="text" value="${sessionScope.user.street}" name="street" id="street"><br>
-                    <label for="postalcode">Postal Code:</label><br>
+                    <label for="postalcode"><fmt:message key="label.postalcode"/>:</label><br>
                     <input class="w3-input w3-border" type="text" value="${sessionScope.user.postalCode}" name="postalcode" id="postalcode"><br>
                     <div class="w3-row-padding w3-center">
-                        <button class="w3-button" type="submit">Submit</button>
-                        <button class="w3-button" type="reset">Reset</button>
+                        <button class="w3-button" type="submit"><fmt:message key="button.submit"/></button>
+                        <button class="w3-button" type="reset"><fmt:message key="calculator.button.reset"/></button>
                     </div>
                 </form>
             </c:when>
@@ -206,25 +210,28 @@ body, html {
             <c:when test="${requestScope.message == null}">
                 <form action="update" method="post">
                     <input type="hidden" id="updateAction3" name="updateAction" value="passwordData">
-                    <label for="password">Enter a new password:</label><br>
-                    <input class="w3-input w3-border" type="password" placeholder="Enter new password..." id="password"
+                    <label for="password"><fmt:message key="label.new.password"/>:</label><br>
+                    <fmt:message key="login.placeholder.password" var="placeholderPassword"/>
+                    <fmt:message key="signup.password.title" var="passwordTitle"/>
+                    <fmt:message key="signup.repeat.password" var="repeatPassword"/>
+                    <input class="w3-input w3-border" type="password" placeholder="${placeholderPassword}" id="password"
                            name="password" onkeyup="matchPassword()" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"><br>
-                    <input class="w3-input w3-border" type="password" placeholder="Repeat password..." id="reppass"
+                           title="${passwordTitle}"><br>
+                    <input class="w3-input w3-border" type="password" placeholder="${repeatPassword}" id="reppass"
                            name="reppass" onkeyup="matchPassword()">
                     <p><span id='wrong_pass'></span></p>
-                    <p class="w3-left"><input type="checkbox" onclick="myFunction2(); myFunction3();"> Show Password</p><br>
+                    <p class="w3-left"><input type="checkbox" onclick="myFunction2(); myFunction3();"> <fmt:message key="login.show.password"/></p><br>
                     <div id="message" class="w3-container w3-small w3-center">
-                        <p>Password must contain the following:</p>
-                        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-                        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-                        <p id="number" class="invalid">A <b>number</b></p>
-                        <p id="passwordlength" class="invalid">Minimum <b>8 characters</b></p>
+                        <p><fmt:message key="password.must.contain"/>:</p>
+                        <p id="letter" class="invalid"><fmt:message key="lowercase.letter"/></p>
+                        <p id="capital" class="invalid"><fmt:message key="undercase.letter"/></p>
+                        <p id="number" class="invalid"><fmt:message key="password.number"/></p>
+                        <p id="passwordlength" class="invalid"><fmt:message key="password.characters"/></p>
                     </div>
                     <br>
                     <div class="w3-row-padding w3-center">
-                        <button class="w3-button" type="submit">Submit</button>
-                        <button class="w3-button" type="reset">Reset</button>
+                        <button class="w3-button" type="submit"><fmt:message key="button.submit"/></button>
+                        <button class="w3-button" type="reset"><fmt:message key="calculator.button.reset"/></button>
                     </div>
                 </form>
             </c:when>

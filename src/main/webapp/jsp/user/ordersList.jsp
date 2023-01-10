@@ -66,7 +66,7 @@ body, html {
 
 <div class="w3-container" style="padding:16px 16px">
     <div class="w3-row-padding">
-        <form action="orders" method="post">
+        <form action="orders" method="get">
             <div class="w3-row-padding">
                 <div class="w3-half w3-margin-bottom w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
@@ -172,7 +172,7 @@ body, html {
                                 <input type="hidden" name="order_id" value="${orderId}">
                                 <button class="w3-button"><i class="fa fa-trash-o"></i></button>
                             </form>
-                            <form action="update_page" method="post">
+                            <form action="update_page" method="get">
                                 <input type="hidden" name="order_id" value="${orderId}">
                                 <button class="w3-button"><i class="fa fa-edit"></i></button>
                             </form>

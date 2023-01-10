@@ -58,7 +58,7 @@
     </init-param>
     <init-param>
       <param-name>common</param-name>
-      <param-value>calculate login logout signup home profile update signup_page pdf</param-value>
+      <param-value>calculate login logout signup home profile update signup_page pdf error</param-value>
     </init-param>
   </filter>
 
@@ -76,6 +76,10 @@
     <init-param>
       <param-name>defaultLocale</param-name>
       <param-value>en</param-value>
+    </init-param>
+    <init-param>
+      <param-name>availableLocales</param-name>
+      <param-value>en ua</param-value>
     </init-param>
   </filter>
 

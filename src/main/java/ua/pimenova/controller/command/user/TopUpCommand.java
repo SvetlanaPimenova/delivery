@@ -9,8 +9,9 @@ import ua.pimenova.controller.constants.Pages;
 import ua.pimenova.model.database.entity.User;
 import ua.pimenova.model.exception.DaoException;
 import ua.pimenova.model.service.UserService;
-
 import java.io.IOException;
+import static ua.pimenova.controller.command.CommandUtil.*;
+import static ua.pimenova.controller.constants.Commands.*;
 
 public class TopUpCommand implements ICommand {
     private final UserService userService;
@@ -21,11 +22,16 @@ public class TopUpCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        return isMethodPost(request) ? executePost(request) : executeGet(request);
+    }
+
+    private String executeGet(HttpServletRequest request) {
+        return getURL(request);
+    }
+
+    private String executePost(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        if(user == null) {
-            return Pages.PAGE_ERROR;
-        }
         int sum = Integer.parseInt(request.getParameter("account"));
         int account = user.getAccount() + sum;
         user.setAccount(account);
@@ -33,8 +39,10 @@ public class TopUpCommand implements ICommand {
             userService.update(user);
         } catch (DaoException e) {
             e.printStackTrace();
-            return Pages.PAGE_ERROR;
+            session.setAttribute("url", ERROR);
+            return request.getContextPath() + ERROR;
         }
-        return Pages.ACCOUNT_PAGE;
+        session.setAttribute("url", ACCOUNT);
+        return request.getContextPath() + ACCOUNT;
     }
 }

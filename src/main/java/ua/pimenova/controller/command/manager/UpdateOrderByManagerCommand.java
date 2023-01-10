@@ -8,8 +8,9 @@ import ua.pimenova.controller.constants.Pages;
 import ua.pimenova.model.database.entity.Order;
 import ua.pimenova.model.exception.DaoException;
 import ua.pimenova.model.service.OrderService;
-
 import java.io.IOException;
+import static ua.pimenova.controller.command.CommandUtil.*;
+import static ua.pimenova.controller.constants.Commands.*;
 
 public class UpdateOrderByManagerCommand implements ICommand {
     private final OrderService orderService;
@@ -20,6 +21,15 @@ public class UpdateOrderByManagerCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        return isMethodPost(request) ? executePost(request) : executeGet(request);
+    }
+
+    private String executeGet(HttpServletRequest request) {
+        getAttributeFromSessionToRequest(request, "errorMessage");
+        return getURL(request);
+    }
+
+    private String executePost(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("shipment_id"));
         Order.ExecutionStatus status = Order.ExecutionStatus.valueOf(request.getParameter("newStatus").toUpperCase());
         try {
@@ -28,15 +38,17 @@ public class UpdateOrderByManagerCommand implements ICommand {
                 if(order.getExecutionStatus() != Order.ExecutionStatus.IN_PROCESSING) {
                     order.setExecutionStatus(status);
                     orderService.update(order);
-                    return Pages.USER_PROFILE;
+                    String path = GET_PACKAGES;
+                    request.getSession().setAttribute("url", path);
+                    return request.getContextPath() + path;
                 }
             }
         } catch (DaoException e) {
             e.printStackTrace();
-            return Pages.PAGE_ERROR;
+            return request.getContextPath() + ERROR;
         }
         String errorMessage = "You cannot update a shipment until it would be formed.";
-        request.setAttribute("errorMessage", errorMessage);
-        return Pages.PAGE_ERROR;
+        request.getSession().setAttribute("errorMessage", errorMessage);
+        return request.getContextPath() + ERROR;
     }
 }

@@ -179,7 +179,7 @@ body, html {
                                    title="+380XXXXXXXXX"><br>
                         </div>
                         <div class="w3-half">
-                            <label for="email">E-mail:</label><br>
+                            <label for="email"><fmt:message key="login.label.email"/>:</label><br>
                             <p class="w3-left w3-small">* <fmt:message key="email.message"/></p><br>
                             <input class="w3-input w3-border" type="text" value="${sessionScope.user.email}" name="email"
                                    id="email">

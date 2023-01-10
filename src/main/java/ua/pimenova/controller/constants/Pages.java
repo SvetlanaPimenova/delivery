@@ -19,4 +19,6 @@ public final class Pages {
     public static final String REPORTS = "jsp/manager/reports.jsp";
     public static final String PACKAGES = "jsp/manager/packages.jsp";
     public static final String UPDATE_PACKAGE = "jsp/manager/updateShipment.jsp";
+
+    private Pages() {}
 }

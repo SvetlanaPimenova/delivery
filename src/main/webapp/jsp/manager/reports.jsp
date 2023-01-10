@@ -48,7 +48,7 @@ body, html {
 
 <div class="w3-container" style="padding:16px 16px">
     <div class="w3-row-padding">
-        <form action="reports" method="post">
+        <form action="reports" method="get">
             <div class="w3-row-padding">
                 <div class="w3-quarter w3-left">
                     <label for="searchParameter"><fmt:message key="label.search.by"/>:</label>

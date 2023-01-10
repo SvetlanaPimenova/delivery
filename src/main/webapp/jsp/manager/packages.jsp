@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="messages"/>
 <html lang="en">
 <head>
     <title>Cargo Delivery Service</title>
@@ -57,7 +60,7 @@ body, html {
 <!-- Header with profile info -->
 <header class="w3-container" id="info">
     <div class="w3-left" style="padding-top: 58px; padding-right: 58px; padding-bottom: 0px; padding-left: 58px;">
-        <h3><i class="fa fa-cubes"></i> PACKAGES</h3>
+        <h3><i class="fa fa-cubes"></i> <fmt:message key="manager.packages"/></h3>
     </div>
 </header>
 
@@ -70,57 +73,57 @@ body, html {
                 <div class="w3-half w3-margin-bottom w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="sort" name="sort" onchange="this.form.submit()">
-                            <option value="" selected>Sort</option>
-                            <option value="cost_asc">Total cost low to high</option>
-                            <option value="cost_desc">Total cost high to low</option>
-                            <option value="date_asc">Old ones first</option>
-                            <option value="date_desc">New ones first</option>
+                            <option value="" selected><fmt:message key="option.sort"/></option>
+                            <option value="cost_asc"><fmt:message key="option.sort.cost.low"/></option>
+                            <option value="cost_desc"><fmt:message key="option.sort.cost.high"/></option>
+                            <option value="date_asc"><fmt:message key="option.sort.date.old"/></option>
+                            <option value="date_desc"><fmt:message key="option.sort.date.new"/></option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="deliveryFilter" name="deliveryFilter">
-                            <option value="" selected>Delivery type</option>
-                            <option value="to_the_branch">TO THE BRANCH</option>
-                            <option value="courier">BY COURIER</option>
+                            <option value="" selected><fmt:message key="calculator.label.delivery"/></option>
+                            <option value="to_the_branch"><fmt:message key="calculator.delivery.branch"/></option>
+                            <option value="courier"><fmt:message key="calculator.delivery.courier"/></option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="freightFilter" name="freightFilter">
-                            <option value="" selected>Freight type</option>
-                            <option value="goods">GOODS</option>
-                            <option value="glass">GLASS</option>
-                            <option value="compact">COMPACT</option>
+                            <option value="" selected><fmt:message key="calculator.label.freight"/></option>
+                            <option value="goods"><fmt:message key="calculator.freight.goods"/></option>
+                            <option value="glass"><fmt:message key="calculator.freight.glass"/></option>
+                            <option value="compact"><fmt:message key="option.filter.freight.compact"/></option>
                         </select>
                     </div>
                 </div>
                 <div class="w3-half w3-margin-bottom w3-row-padding">
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="paymentFilter" name="paymentFilter">
-                            <option value="" selected>Payment status</option>
-                            <option value="paid">PAID</option>
-                            <option value="unpaid">UNPAID</option>
+                            <option value="" selected><fmt:message key="option.filter.payment"/></option>
+                            <option value="paid"><fmt:message key="option.filter.payment.paid"/></option>
+                            <option value="unpaid"><fmt:message key="option.filter.payment.unpaid"/></option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <select class="w3-input w3-border" id="executionFilter" name="executionFilter">
-                            <option value="" selected>Execution status</option>
-                            <option value="in_processing">IN PROCESSING</option>
-                            <option value="formed">FORMED</option>
-                            <option value="sent">SENT</option>
-                            <option value="arrived_at_destination">AT DESTINATION</option>
-                            <option value="delivered">DELIVERED</option>
+                            <option value="" selected><fmt:message key="option.filter.execution"/></option>
+                            <option value="in_processing"><fmt:message key="option.filter.execution.processing"/></option>
+                            <option value="formed"><fmt:message key="option.filter.execution.formed"/></option>
+                            <option value="sent"><fmt:message key="option.filter.execution.sent"/></option>
+                            <option value="arrived_at_destination"><fmt:message key="option.filter.execution.destination"/></option>
+                            <option value="delivered"><fmt:message key="option.filter.execution.delivered"/></option>
                         </select>
                     </div>
                     <div class="w3-third w3-margin-bottom">
                         <div class="w3-row-padding w3-center">
-                            <button class="w3-button" type="submit">Submit</button>
+                            <button class="w3-button" type="submit"><fmt:message key="button.submit"/></button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="w3-row-padding">
                 <input type="hidden" name="currentPage" value="1">
-                <label for="recordsPerPage">Select records per page:</label>
+                <label for="recordsPerPage"><fmt:message key="option.records"/>:</label>
                 <select id="recordsPerPage" name="recordsPerPage">
                     <option value="4" selected>4</option>
                     <option value="8">8</option>
@@ -131,17 +134,17 @@ body, html {
     </div>
     <table class="w3-table w3-centered w3-border w3-bordered w3-striped">
         <tr>
-            <td class="w3-border-right">№</td>
-            <td class="w3-border-right">Shipment date</td>
-            <td class="w3-border-right">From</td>
-            <td class="w3-border-right">To</td>
-            <td class="w3-border-right">Freight info</td>
-            <td class="w3-border-right">Total cost, UAH</td>
-            <td class="w3-border-right">Delivery type</td>
-            <td class="w3-border-right">Sender</td>
-            <td class="w3-border-right">Receiver</td>
-            <td class="w3-border-right">Payment status</td>
-            <td class="w3-border-right">Execution status</td>
+            <td class="w3-border-right"><fmt:message key="number.character"/></td>
+            <td class="w3-border-right"><fmt:message key="table.shipment.date"/></td>
+            <td class="w3-border-right"><fmt:message key="calculator.label.from"/></td>
+            <td class="w3-border-right"><fmt:message key="calculator.label.to"/></td>
+            <td class="w3-border-right"><fmt:message key="table.freight.info"/></td>
+            <td class="w3-border-right"><fmt:message key="table.total.cost"/></td>
+            <td class="w3-border-right"><fmt:message key="calculator.label.delivery"/></td>
+            <td class="w3-border-right"><fmt:message key="option.sender"/></td>
+            <td class="w3-border-right"><fmt:message key="table.receiver"/></td>
+            <td class="w3-border-right"><fmt:message key="option.filter.payment"/></td>
+            <td class="w3-border-right"><fmt:message key="option.filter.execution"/></td>
             <td><br></td>
         </tr>
         <c:forEach var="shipment" items="${requestScope.shipments}" varStatus="shipmentStatus">
@@ -152,7 +155,7 @@ body, html {
                 <td class="w3-border-right">${shipment.receiver.city}</td>
                 <td class="w3-border-right">${shipment.freight.type}, ${shipment.freight.weight} kg,<br>
                     ${shipment.freight.length} x ${shipment.freight.width} x ${shipment.freight.height} cm,<br>
-                    Estimated cost: ${shipment.freight.estimatedCost} UAH
+                    <fmt:message key="calculator.label.cost"/>: ${shipment.freight.estimatedCost}
                 </td>
                 <td class="w3-border-right">${shipment.totalCost}</td>
                 <td class="w3-border-right">${shipment.deliveryType}</td>
@@ -170,7 +173,7 @@ body, html {
                 <td class="w3-border-right">${shipment.executionStatus}</td>
                 <td>
                     <c:set var="shipmentId" value="${shipment.id}" scope="request"/>
-                    <form action="updateShipment_page" method="post">
+                    <form action="updateShipment_page" method="get">
                         <input type="hidden" id="shipmentId" name="shipment_id" value="${shipmentId}"><br>
                         <button class="w3-button"><i class="fa fa-edit"></i></button>
                     </form>

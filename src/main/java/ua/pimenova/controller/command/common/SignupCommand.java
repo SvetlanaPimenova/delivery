@@ -12,6 +12,9 @@ import ua.pimenova.model.service.UserService;
 
 import java.io.IOException;
 
+import static ua.pimenova.controller.command.CommandUtil.*;
+import static ua.pimenova.controller.constants.Commands.*;
+
 public class SignupCommand implements ICommand {
     private final UserService userService;
 
@@ -21,31 +24,40 @@ public class SignupCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        return isMethodPost(request) ? executePost(request) : executeGet(request);
+    }
+
+    private String executeGet(HttpServletRequest request) {
+        getAttributeFromSessionToRequest(request, "errorPhone");
+        getAttributeFromSessionToRequest(request, "errorEmail");
+        return getURL(request);
+    }
+
+    private String executePost(HttpServletRequest request) {
         User user = getUser(request);
         try {
-            if(userService.getByPhone(user.getPhone()) != null) {
+            if (userService.getByPhone(user.getPhone()) != null) {
                 String errorPhone = "This phone number is already in use.";
-                request.setAttribute("errorPhone", errorPhone);
-                return Pages.SIGNUP_PAGE;
+                request.getSession().setAttribute("errorPhone", errorPhone);
+                request.getSession().setAttribute("url", SHOW_SIGNUP_PAGE);
+                return request.getContextPath() + SHOW_SIGNUP_PAGE;
             }
-            if(userService.getByEmail(user.getEmail()) != null) {
+            if (userService.getByEmail(user.getEmail()) != null) {
                 String errorEmail = "This e-mail is already in use.";
-                request.setAttribute("errorEmail", errorEmail);
-                return Pages.SIGNUP_PAGE;
+                request.getSession().setAttribute("errorEmail", errorEmail);
+                request.getSession().setAttribute("url", SHOW_SIGNUP_PAGE);
+                return request.getContextPath() + SHOW_SIGNUP_PAGE;
             }
             userService.create(user);
         } catch (DaoException e) {
             e.printStackTrace();
-            return Pages.PAGE_ERROR;
-        }
-        HttpSession oldSession = request.getSession(false);
-        if(oldSession != null) {
-            oldSession.invalidate();
+            return request.getContextPath() + ERROR;
         }
         HttpSession newSession = request.getSession(true);
         newSession.setAttribute("user", user);
         newSession.setAttribute("userRole", user.getRole());
-        return Pages.USER_PROFILE;
+        request.getSession().setAttribute("url", PROFILE);
+        return request.getContextPath() + PROFILE;
     }
 
     private User getUser(HttpServletRequest request) {

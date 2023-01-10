@@ -60,7 +60,7 @@ public class LoginCommandTest {
         Mockito.when(req.getParameter("emaillogin")).thenReturn("user@gmail.com");
         Mockito.when(req.getParameter("passlogin")).thenReturn("pass");
         Mockito.when(userService.getUserByEmailAndPassword("user@gmail.com", "pass")).thenReturn(user);
-        Mockito.when(req.getSession(true)).thenReturn(session);
+        Mockito.when(req.getSession(false)).thenReturn(session);
 
         String result = command.execute(req, resp);
         assertEquals(Pages.USER_PROFILE, result);
@@ -71,7 +71,7 @@ public class LoginCommandTest {
         Mockito.when(req.getParameter("emaillogin")).thenReturn("manager@gmail.com");
         Mockito.when(req.getParameter("passlogin")).thenReturn("pass");
         Mockito.when(userService.getUserByEmailAndPassword("manager@gmail.com", "pass")).thenReturn(manager);
-        Mockito.when(req.getSession(true)).thenReturn(session);
+        Mockito.when(req.getSession(false)).thenReturn(session);
 
         String result = command.execute(req, resp);
         assertEquals(Pages.MANAGER_PROFILE, result);

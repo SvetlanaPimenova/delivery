@@ -10,9 +10,10 @@ import ua.pimenova.model.database.entity.*;
 import ua.pimenova.model.exception.DaoException;
 import ua.pimenova.model.service.OrderService;
 import ua.pimenova.model.util.Calculator;
-
 import java.io.IOException;
 import java.util.Date;
+import static ua.pimenova.controller.command.CommandUtil.*;
+import static ua.pimenova.controller.constants.Commands.*;
 
 public class CreateOrderCommand implements ICommand {
     private final OrderService orderService;
@@ -23,11 +24,18 @@ public class CreateOrderCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        return isMethodPost(request) ? executePost(request) : executeGet(request);
+    }
+
+    private String executeGet(HttpServletRequest request) {
+        return getURL(request);
+    }
+
+    private String executePost(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        if(user == null) {
-            return Pages.PAGE_ERROR;
-        } else {
+        String path = ERROR;
+        if (user != null) {
             Freight freight = getFullFreight(request);
             Receiver receiver = getFullReceiver(request);
             Order order = getFullOrder(request, freight, receiver, user);
@@ -35,11 +43,13 @@ public class CreateOrderCommand implements ICommand {
                 order = orderService.create(order);
             } catch (DaoException e) {
                 e.printStackTrace();
-                return Pages.PAGE_ERROR;
+                return path;
             }
-            request.setAttribute("newOrder", order);
-            return Pages.CREATE_ORDER;
+            path = SHOW_PAGE_CREATE_ORDER;
+            request.getSession().setAttribute("newOrder", order);
+            request.getSession().setAttribute("url", path);
         }
+        return request.getContextPath() + path;
     }
 
     private Freight getFullFreight(HttpServletRequest request) {

@@ -87,7 +87,7 @@ body, html {
 <!-- Create order form -->
 <div class="w3-container" style="padding:16px 16px">
     <c:choose>
-        <c:when test="${requestScope.newOrder == null}">
+        <c:when test="${newOrder == null}">
             <form action="createOrder" method="post">
                 <div class="w3-row-padding w3-margin-bottom">
                     <h4 class="w3-left"><fmt:message key="shipping.options"/></h4><br>
@@ -217,7 +217,7 @@ body, html {
                         <label for="cost"><fmt:message key="calculator.label.cost"/></label>
                     </div>
                     <div class="w3-twothird w3-margin-bottom">
-                        <input type="number" id="cost" name="cost" placeholder="0.0">
+                        <input type="number" id="cost" name="cost" placeholder="0.0" min="0.0">
                     </div>
                 </div>
                 <hr>

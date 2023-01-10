@@ -107,4 +107,10 @@ public class OrderServiceImplTest {
         Mockito.when(orderDao.getAllOrdersByCityFrom(testOrder.getCityFrom())).thenReturn(testList);
         assertEquals(testList, impl.getAllOrdersByCityFrom("City"));
     }
+
+    @Test
+    void getNumberOfRows() throws DaoException {
+        Mockito.when(orderDao.getNumberOfRows("")).thenReturn(1);
+        assertEquals(testList.size(), impl.getNumberOfRows(""));
+    }
 }

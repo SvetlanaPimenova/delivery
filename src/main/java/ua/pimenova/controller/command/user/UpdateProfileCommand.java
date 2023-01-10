@@ -12,6 +12,9 @@ import ua.pimenova.model.service.UserService;
 
 import java.io.IOException;
 
+import static ua.pimenova.controller.command.CommandUtil.*;
+import static ua.pimenova.controller.constants.Commands.*;
+
 public class UpdateProfileCommand implements ICommand {
     private UserService userService;
     private boolean isUpdated = false;
@@ -22,46 +25,44 @@ public class UpdateProfileCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        return isMethodPost(request) ? executePost(request) : executeGet(request);
+    }
+
+    private String executeGet(HttpServletRequest request) {
+        getAttributeFromSessionToRequest(request, "message");
+        return getURL(request);
+    }
+
+    private String executePost(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        String forward;
-        if(user.getRole() == User.Role.USER) {
-            forward = Pages.USER_PROFILE;
-        } else {
-            forward = Pages.MANAGER_PROFILE;
+        String path = PROFILE;
+        String action = request.getParameter("updateAction");
+        switch (action) {
+            case "personalData":
+                try {
+                    updatePersonalData(request, user);
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                    path = ERROR;
+                }
+            case "contactData":
+                try {
+                    updateContactData(request, user);
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                    path = ERROR;
+                }
+            case "passwordData":
+                try {
+                    updatePasswordData(request, user);
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                    path = ERROR;
+                }
         }
-        if(user == null) {
-            return Pages.PAGE_ERROR;
-        } else {
-            String action = request.getParameter("updateAction");
-            switch (action) {
-                case "personalData":
-                    try {
-                        updatePersonalData(request, user);
-                        return forward;
-                    } catch (DaoException e) {
-                        e.printStackTrace();
-                        return Pages.PAGE_ERROR;
-                    }
-                case "contactData":
-                    try {
-                        updateContactData(request, user);
-                        return forward;
-                    } catch (DaoException e) {
-                        e.printStackTrace();
-                        return Pages.PAGE_ERROR;
-                    }
-                case "passwordData":
-                    try {
-                        updatePasswordData(request, user);
-                        return forward;
-                    } catch (DaoException e) {
-                        e.printStackTrace();
-                        return Pages.PAGE_ERROR;
-                    }
-            }
-        }
-        return Pages.PAGE_ERROR;
+        session.setAttribute("url", path);
+        return request.getContextPath() + UPDATE_PROFILE;
     }
 
     private void updatePersonalData(HttpServletRequest request, User user) throws DaoException {
@@ -71,12 +72,12 @@ public class UpdateProfileCommand implements ICommand {
         user.setLastname(lastname);
         String message;
         isUpdated = userService.update(user);
-        if(isUpdated) {
+        if (isUpdated) {
             message = "Personal data have been successfully changed!";
         } else {
             message = "Personal data have not been changed.";
         }
-        request.setAttribute("message", message);
+        request.getSession().setAttribute("message", message);
     }
 
     private void updateContactData(HttpServletRequest request, User user) throws DaoException {
@@ -92,12 +93,12 @@ public class UpdateProfileCommand implements ICommand {
         user.setPostalCode(postalCode);
         String message;
         isUpdated = userService.update(user);
-        if(isUpdated) {
+        if (isUpdated) {
             message = "Contact data have been successfully changed!";
         } else {
             message = "Contact data have not been changed.";
         }
-        request.setAttribute("message", message);
+        request.getSession().setAttribute("message", message);
     }
 
     private void updatePasswordData(HttpServletRequest request, User user) throws DaoException {
@@ -105,11 +106,11 @@ public class UpdateProfileCommand implements ICommand {
         user.setPassword(password);
         String message;
         isUpdated = userService.updatePassword(user);
-        if(isUpdated) {
+        if (isUpdated) {
             message = "Password has been successfully changed!";
         } else {
             message = "Password has not been changed.";
         }
-        request.setAttribute("message", message);
+        request.getSession().setAttribute("message", message);
     }
 }

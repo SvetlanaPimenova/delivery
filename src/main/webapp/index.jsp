@@ -127,11 +127,11 @@ body, html {
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
-        <a href="#home" class="w3-bar-item w3-button w3-wide"> <fmt:message key="home"/></a>
+        <a href="home" class="w3-bar-item w3-button w3-wide"> <fmt:message key="home"/></a>
         <div class="dropdown">
             <button class="w3-bar-item w3-button dropbtn"><i class="fa fa-globe"></i> <fmt:message key="language"/></button>
             <div class="dropdown-content">
-                <form method="post">
+                <form method="get">
                     <select name="locale" onchange='submit()'>
                         <option value="en" ${sessionScope.locale eq 'en' ? 'selected' : ''}> <fmt:message key="en"/></option>
                         <option value="ua" ${sessionScope.locale eq 'ua' ? 'selected' : ''}> <fmt:message key="ua"/></option>
@@ -307,7 +307,7 @@ body, html {
     <p class="w3-center w3-large"><fmt:message key="calculator.section.text"/></p>
     <div class="w3-container w3-padding-16 w3-grayscale w3-card w3-center">
         <c:choose>
-            <c:when test="${result == null}">
+            <c:when test="${sessionScope.result == null}">
                 <form action="calculate" method="post">
                     <div class="w3-row-padding">
                         <div class="w3-third w3-margin-bottom">
@@ -448,20 +448,20 @@ body, html {
             <c:otherwise>
                 <div class="w3-container w3-padding-16 w3-center">
                     <div class="w3-half w3-left">
-                        <p><fmt:message key="calculator.label.from"/>: ${param.cityfrom}</p>
-                        <p><fmt:message key="calculator.label.to"/>: ${param.cityto}</p>
-                        <p><fmt:message key="calculator.label.freight"/>: ${param.freighttype}</p>
-                        <p><fmt:message key="calculator.label.delivery"/>: ${param.deliverytype}</p>
+                        <p><fmt:message key="calculator.label.from"/>: ${cityfrom}</p>
+                        <p><fmt:message key="calculator.label.to"/>: ${cityto}</p>
+                        <p><fmt:message key="calculator.label.freight"/>: ${freighttype}</p>
+                        <p><fmt:message key="calculator.label.delivery"/>: ${deliverytype}</p>
                     </div>
                     <div class="w3-half w3-left">
-                        <p><fmt:message key="calculator.freight.weight"/>: ${param.weight}</p>
-                        <p><fmt:message key="calculator.freight.length"/>: ${param.length}</p>
-                        <p><fmt:message key="calculator.freight.width"/>: ${param.width}</p>
-                        <p><fmt:message key="calculator.freight.height"/>: ${param.height}</p>
+                        <p><fmt:message key="calculator.freight.weight"/>: ${weight}</p>
+                        <p><fmt:message key="calculator.freight.length"/>: ${length}</p>
+                        <p><fmt:message key="calculator.freight.width"/>: ${width}</p>
+                        <p><fmt:message key="calculator.freight.height"/>: ${height}</p>
                     </div>
                 </div>
                 <div class="w3-container w3-left">
-                    <p class="w3-large" style="line-height: 0.5;"><fmt:message key="calculator.label.cost"/>: ${requestScope.result}</p>
+                    <p class="w3-large" style="line-height: 0.5;"><fmt:message key="calculator.label.cost"/>: ${sessionScope.result}</p>
                     <p class="w3-small w3-left" style="line-height: 0.5;"><fmt:message key="calculator.cost.note1"/></p>
                     <br>
                     <p class="w3-small w3-left"><fmt:message key="calculator.cost.note2"/></p>
